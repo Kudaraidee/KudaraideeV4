@@ -99,7 +99,7 @@ while($true)
     #Update the Wallet
     #Write-host "Loading Wallet from $PoolName" -foregroundcolor "Yellow"
     #$phiphipool_wallet = Invoke-WebRequest -Uri "http://www.phi-phi-pool.com/api/wallet?address=$Wallet" -UseBasicParsing | ConvertFrom-Json
-    #$phiphipool_wallet | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | ForEach {
+    #$Wallet_stats | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | ForEach {
       #$Wallet_Balance = $phiphipool_wallet.$_.balance
       #$Wallet_Unpaid = $phiphipool_wallet.$_.unpaid
       #$Wallet_Total = $phiphipool_wallet.$_.total }
@@ -322,11 +322,16 @@ while($true)
         @{Label = "BTC/Day"; Expression={$_.Profits.PSObject.Properties.Value | ForEach {if($_ -ne $null){$_.ToString("N5")}else{"Benchmarking"}}}; Align='right'}, 
         @{Label = "BTC/GH/Day"; Expression={$_.Pools.PSObject.Properties.Value.Price | ForEach {($_*1000000000).ToString("N5")}}; Align='right'},
         @{Label = "$Currency/Day"; Expression={$_.Profits.PSObject.Properties.Value | ForEach {if($_ -ne $null){($_ * $Rates.$Currency).ToString("N3")}else{"Benchmarking"}}}; Align='right'}, 
-        @{Label = "Pool"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.Name)"}}},
-        @{Label = "Workers"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.Workers)"}}; Align='center'}
+        @{Label = "Pool"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.Name)"}}; Align='center'},
+        @{Label = "Coins"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.Info) - Coin(s)"}}; Align='center'},
+        @{Label = "Pool Fees"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.PoolFees)"}}; Align='center'},
+        @{Label = "Pool Workers"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.Workers)"}}; Align='center'},
+        @{Label = "Pool Hashrate"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.PoolHashrate| ConvertTo-Hash)/s"}}; Align='right'}
+        
         
     ) | Out-Host
     
+
     #Display active miners list
     $ActiveMinerPrograms | Sort -Descending Status,{if($_.Process -eq $null){[DateTime]0}else{$_.Process.StartTime}} | Select -First (1+6+6) | Format-Table -Wrap -GroupBy Status (
         @{Label = "Speed"; Expression={$_.HashRate | ForEach {"$($_ | ConvertTo-Hash)/s"}}; Align='right'}, 

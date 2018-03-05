@@ -306,8 +306,15 @@ while($true)
     
     #Display mining information
     Clear-Host
-    Write-Host "1 BTC = " $Rates.$Currency "$Currency" -foregroundcolor "Yellow"
-    
+    Write-Host ""
+    Write-Host "                                             KUDARAIDEE V3" -foregroundcolor "Green" 
+    Write-Host ""
+    Write-Host "                *** Thank you Sniffdogmine , Multipoolminer and NemosMiner for database. ***" -foregroundcolor "Green" 
+    Write-Host ""
+    Write-Host "                                             $(Get-Date -Format "dd / MM / yyyy")" -foregroundcolor "Green"
+    Write-Host ""
+    Write-Host "  ----> 1BTC = " $Rates.$Currency "$Currency" -foregroundcolor "Yellow"
+        
     $Miners | Where {$_.Profit -ge 1E-5 -or $_.Profit -eq $null} | Sort -Descending Type,Profit | Format-Table -GroupBy Type (
         @{Label = "Miner"; Expression={$_.Name}}, 
         @{Label = "Algorithm"; Expression={$_.HashRates.PSObject.Properties.Name}}, 

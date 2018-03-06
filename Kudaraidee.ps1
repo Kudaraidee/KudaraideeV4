@@ -324,7 +324,7 @@ while($true)
         @{Label = "$Currency/Day"; Expression={$_.Profits.PSObject.Properties.Value | ForEach {if($_ -ne $null){($_ * $Rates.$Currency).ToString("N3")}else{"Benchmarking"}}}; Align='right'}, 
         @{Label = "Pool"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.Name)"}}; Align='center'},
         @{Label = "Coins"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.Info) - Coin(s)"}}; Align='center'},
-        @{Label = "Pool Fees"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.PoolFees)"}}; Align='center'},
+        @{Label = "Pool Fees"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.PoolFees) %"}}; Align='center'},
         @{Label = "Pool Workers"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.Workers)"}}; Align='center'},
         @{Label = "Pool Hashrate"; Expression={$_.Pools.PSObject.Properties.Value | ForEach {"$($_.PoolHashrate| ConvertTo-Hash)/s"}}; Align='right'}
         

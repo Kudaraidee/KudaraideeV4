@@ -363,6 +363,22 @@ while($true)
         }
     }
 
+     #You can examine the difference before and after with:
+    ps powershell* | Select *memory* | ft -auto `
+    @{Name='Virtual Memory Size (MB)';Expression={($_.VirtualMemorySize64)/1MB}; Align='center'}, `
+    @{Name='Private Memory Size (MB)';Expression={(  $_.PrivateMemorySize64)/1MB}; Align='center'},
+    @{Name='Memory Used This Session (MB)';Expression={([System.gc]::gettotalmemory("forcefullcollection") /1MB)}; Align='center'}
+
+   
+
+
+    #Reduce Memory
+    Get-Job -State Completed | Remove-Job
+    [GC]::Collect()
+    [GC]::WaitForPendingFinalizers()
+    [GC]::Collect()
+    
+     
     #Do nothing for a set Interval to allow miner to run
     If ([int]$Interval -gt [int]$CheckMinerInterval) {
         Sleep ($Interval-$CheckMinerInterval)

@@ -1,0 +1,14 @@
+{
+	"default": {
+		"UserName": "nemo",
+		"Wallet": "1QGADhdMRpp9Pk5u5zG1TrHKRrdK5R81TE",
+		"WorkerName": "ID=NemosMiner3.0",
+		"PricePenaltyFactor": 1
+	},
+	"nicehash": {
+		"UserName": "nemo",
+		"Wallet": "1QGADhdMRpp9Pk5u5zG1TrHKRrdK5R81TE",
+		"WorkerName": "NemosMiner3.0",
+		"PricePenaltyFactor": 1
+	}
+}

@@ -14,13 +14,13 @@ $Locations = "US", "Europe"
 $Locations | ForEach {
     $Location = $_
 
-    $phiphipool_Request | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+    $phiphipool_Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | foreach {
         $phiphipool_Host = "pool1.phi-phi-pool.com"
         $phiphipool_Port = $phiphipool_Request.$_.port
         $phiphipool_Algorithm = Get-Algorithm $phiphipool_Request.$_.name
         $phiphipool_Coin = ""
 
-        $Divisor = 1000000
+        $Divisor = 1000000000
 
         switch ($phiphipool_Algorithm) {
             "equihash"{$Divisor /= 1000}
@@ -38,8 +38,8 @@ $Locations | ForEach {
 			"yescrypt"{$Divisor /= 1000}
         }
 
-        if ((Get-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit") -eq $null) {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.estimate_last24h / $Divisor)}
-        else {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.estimate_current / $Divisor)}
+        if ((Get-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit") -eq $null) {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.actual_last24h / $Divisor)}
+        else {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.actual_last24h / $Divisor)}
 
         $ConfName = if ($Config.PoolsConfig.$Name -ne $Null) {$Name}else {"default"}
 	

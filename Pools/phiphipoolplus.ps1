@@ -1,8 +1,9 @@
 . .\Include.ps1
 
-try { 
-    $phiphipool_Request = Invoke-RestMethod "http://www.phi-phi-pool.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
-} 
+$PlusPath = ((split-path -parent (get-item $script:MyInvocation.MyCommand.Path).Directory) + "\BrainPlus\phiphipoolplus\phiphipoolplus.json")
+Try {
+    $phiphipool_Request = get-content $PlusPath | ConvertFrom-Json 
+}
 catch { return }
  
 if (-not $phiphipool_Request) {return}
@@ -20,7 +21,7 @@ $Locations | ForEach {
         $phiphipool_Algorithm = Get-Algorithm $phiphipool_Request.$_.name
         $phiphipool_Coin = ""
 
-        $Divisor = 1000000
+        $Divisor = 1000000000
 
         switch ($phiphipool_Algorithm) {
             "equihash"{$Divisor /= 1000}
@@ -38,9 +39,9 @@ $Locations | ForEach {
 			"yescrypt"{$Divisor /= 1000}
         }
 
-        if ((Get-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit") -eq $null) {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.estimate_last24h / $Divisor)}
-        else {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.estimate_current / $Divisor)}
-
+        if ((Get-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit") -eq $null) {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.actual_last24h / $Divisor)}
+        else {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.actual_last24h / $Divisor)}
+		
         $ConfName = if ($Config.PoolsConfig.$Name -ne $Null) {$Name}else {"default"}
 	
         if ($Config.PoolsConfig.default.Wallet) {

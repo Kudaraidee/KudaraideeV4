@@ -1,1 +1,0 @@
-powershell -version 5.0 -noexit -executionpolicy bypass -windowstyle maximized -command "&.\Kudaraidee.ps1 -Workername <RIGNAME> -Wallet <YOUR_WALLET> -Currency THB -interval 30 -Delay 1 -Location asia -PoolName AHashPool -Type nvidia -Algorithm bitcore,blake2s,blakecoin,c11,groestl,hmq1725,hsr,keccak,lbry,lyra2re2,neoscrypt,nist5,phi,skein,skunk,timetravel,tribus,x17,xevan

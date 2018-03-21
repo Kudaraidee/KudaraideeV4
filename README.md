@@ -3,6 +3,7 @@
  
  Instructions at bottom of the page.
 *****
+                **Kudaraidee v4.0 is a modified version of NemosMiner V3.0**
 Kudaraidee-v4.0 Monitors mining pools in real-time in order to find the most profitable Algo /
  Auto Benchmarks Each algo to get optimal speeds / 
  Fully automated / 

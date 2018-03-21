@@ -515,7 +515,7 @@ $LabelAlgos.text = "Algorithm"
 $LabelAlgos.AutoSize = $false
 $LabelAlgos.width = 120
 $LabelAlgos.height = 20
-$LabelAlgos.location = New-Object System.Drawing.Point(2, 134)
+$LabelAlgos.location = New-Object System.Drawing.Point(2, 156)
 $LabelAlgos.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $LabelAlgos
 
@@ -527,7 +527,7 @@ $TBAlgos.text = $Config.Algorithm -Join ","
 $TBAlgos.AutoSize = $false
 $TBAlgos.width = 300
 $TBAlgos.height = 20
-$TBAlgos.location = New-Object System.Drawing.Point(122, 134)
+$TBAlgos.location = New-Object System.Drawing.Point(122, 156)
 $TBAlgos.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $TBAlgos
 
@@ -536,7 +536,7 @@ $LabelCurrency.text = "Currency"
 $LabelCurrency.AutoSize = $false
 $LabelCurrency.width = 120
 $LabelCurrency.height = 20
-$LabelCurrency.location = New-Object System.Drawing.Point(2, 156)
+$LabelCurrency.location = New-Object System.Drawing.Point(2, 178)
 $LabelCurrency.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $LabelCurrency
 
@@ -548,7 +548,7 @@ $TBCurrency.text = $Config.Currency
 $TBCurrency.AutoSize = $false
 $TBCurrency.width = 300
 $TBCurrency.height = 20
-$TBCurrency.location = New-Object System.Drawing.Point(122, 156)
+$TBCurrency.location = New-Object System.Drawing.Point(122, 178)
 $TBCurrency.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $TBCurrency
 
@@ -557,7 +557,7 @@ $LabelPwdCurrency.text = "Pwd Currency"
 $LabelPwdCurrency.AutoSize = $false
 $LabelPwdCurrency.width = 120
 $LabelPwdCurrency.height = 20
-$LabelPwdCurrency.location = New-Object System.Drawing.Point(2, 178)
+$LabelPwdCurrency.location = New-Object System.Drawing.Point(2, 200)
 $LabelPwdCurrency.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $LabelPwdCurrency
 
@@ -569,16 +569,38 @@ $TBPwdCurrency.text = $Config.Passwordcurrency
 $TBPwdCurrency.AutoSize = $false
 $TBPwdCurrency.width = 300
 $TBPwdCurrency.height = 20
-$TBPwdCurrency.location = New-Object System.Drawing.Point(122, 178)
+$TBPwdCurrency.location = New-Object System.Drawing.Point(122, 200)
 $TBPwdCurrency.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $TBPwdCurrency
+
+$LabelType = New-Object system.Windows.Forms.Label
+$LabelType.text = "Miner Type"
+$LabelType.AutoSize = $false
+$LabelType.width = 120
+$LabelType.height = 20
+$LabelType.location = New-Object System.Drawing.Point(2, 134)
+$LabelType.Font = 'Microsoft Sans Serif,10'
+$ConfigPageControls += $LabelType
+
+$TBType = New-Object system.Windows.Forms.TextBox
+$TBType.Tag = "Type"
+$TBType.MultiLine = $False
+# $TBType.Scrollbars				= "Vertical" 
+$TBType.text = $Type
+$TBType.AutoSize = $false
+$TBType.width = 300
+$TBType.height = 20
+$TBType.location = New-Object System.Drawing.Point(122, 134)
+$TBType.Font = 'Microsoft Sans Serif,10'
+$ConfigPageControls += $TBType
+
 
 $LabelDonate = New-Object system.Windows.Forms.Label
 $LabelDonate.text = "Donate (min)"
 $LabelDonate.AutoSize = $false
 $LabelDonate.width = 120
 $LabelDonate.height = 20
-$LabelDonate.location = New-Object System.Drawing.Point(2, 200)
+$LabelDonate.location = New-Object System.Drawing.Point(2, 222)
 $LabelDonate.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $LabelDonate
 
@@ -590,7 +612,7 @@ $TBDonate.text = $Config.Donate
 $TBDonate.AutoSize = $false
 $TBDonate.width = 300
 $TBDonate.height = 20
-$TBDonate.location = New-Object System.Drawing.Point(122, 200)
+$TBDonate.location = New-Object System.Drawing.Point(122, 222)
 $TBDonate.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $TBDonate
 
@@ -599,7 +621,7 @@ $LabelProxy.text = "Proxy"
 $LabelProxy.AutoSize = $false
 $LabelProxy.width = 120
 $LabelProxy.height = 20
-$LabelProxy.location = New-Object System.Drawing.Point(2, 222)
+$LabelProxy.location = New-Object System.Drawing.Point(2, 244)
 $LabelProxy.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $LabelProxy
 
@@ -611,7 +633,7 @@ $TBProxy.text = $Config.Proxy
 $TBProxy.AutoSize = $false
 $TBProxy.width = 300
 $TBProxy.height = 20
-$TBProxy.location = New-Object System.Drawing.Point(122, 222)
+$TBProxy.location = New-Object System.Drawing.Point(122, 244)
 $TBProxy.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $TBProxy
 
@@ -620,7 +642,7 @@ $LabelActiveMinerGainPct.text = "ActiveMinerGain%"
 $LabelActiveMinerGainPct.AutoSize = $false
 $LabelActiveMinerGainPct.width = 120
 $LabelActiveMinerGainPct.height = 20
-$LabelActiveMinerGainPct.location = New-Object System.Drawing.Point(2, 244)
+$LabelActiveMinerGainPct.location = New-Object System.Drawing.Point(2, 266)
 $LabelActiveMinerGainPct.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $LabelActiveMinerGainPct
 
@@ -632,7 +654,7 @@ $TBActiveMinerGainPct.text = $Config.ActiveMinerGainPct
 $TBActiveMinerGainPct.AutoSize = $false
 $TBActiveMinerGainPct.width = 300
 $TBActiveMinerGainPct.height = 20
-$TBActiveMinerGainPct.location = New-Object System.Drawing.Point(122, 244)
+$TBActiveMinerGainPct.location = New-Object System.Drawing.Point(122, 266)
 $TBActiveMinerGainPct.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $TBActiveMinerGainPct
 

@@ -7,7 +7,7 @@ Function InitApplication {
     [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
     Get-ChildItem . -Recurse | Unblock-File
-    Update-Status("INFO: Adding Kudaraidee path to Windows Defender's exclusions.. (may show an error if Windows Defender is disabled)")
+    Update-Status("INFO: Adding NemosMiner path to Windows Defender's exclusions.. (may show an error if Windows Defender is disabled)")
     try {if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) {Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'"}}catch {}
     if ($Proxy -eq "") {$PSDefaultParameterValues.Remove("*:Proxy")}
     else {$PSDefaultParameterValues["*:Proxy"] = $Proxy}
@@ -30,10 +30,7 @@ Function InitApplication {
     $Variables | Add-Member -Force @{UserNameBackup = $Config.UserName}
     $Variables | Add-Member -Force @{WorkerNameBackup = $Config.WorkerName}
     $Variables | Add-Member -Force @{EarningsPool = ""}
-    Update-Status("Finding available TCP Port")
-    $Variables | Add-Member -Force @{MinerAPITCPPort = Get-FreeTcpPort}
-    Update-Status("Miners API Port: $($Variables.MinerAPITCPPort)")
-
+    
     # Starts Brains if necessary
     Update-Status("Starting Brains for Plus...")
     $Variables | Add-Member -Force @{BrainJobs = @()}

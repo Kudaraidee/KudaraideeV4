@@ -1,12 +1,9 @@
-$Path = '.\Bin\NVIDIA-KlausT\ccminer.exe'
+$Path = '.\Bin\NVIDIA-YescryptR16Mod\ccminer.exe'
 $Uri = 'https://github.com/KlausT/ccminer/releases/download/8.20/ccminer-820-cuda91-x64.zip'
 
 $Commands = [PSCustomObject]@{
-    #BlakeVanilla = ''
-    #NeoScrypt = ''
-    #MyriadGroestl = ''
-    Groestl = ''
-    #Nist5 = ''
+    YescryptR16 = ' --cpu-priority 3'
+    
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

@@ -1,12 +1,33 @@
-$Path = '.\Bin\NVIDIA-KlausT\ccminer.exe'
-$Uri = 'https://github.com/KlausT/ccminer/releases/download/8.20/ccminer-820-cuda91-x64.zip'
+$Path = '.\Bin\NVIDIA-Alexishsr\ccminer-hsr.exe'
+$Uri = 'http://ccminer.org/preview/ccminer-hsr-alexis-x86-cuda8.7z'
 
 $Commands = [PSCustomObject]@{
-    #BlakeVanilla = ''
-    #NeoScrypt = ''
+    #Lyra2z = ''#lyra2z
+    #Equihash = '' #equihash
+    #Sia = ''#sia
+    #Yescrypt = ''#yescrypt
+    #BlakeVanilla = ''#vanilla
+    #Lyra2RE2 = ''#lyra2v2
+    #Skein = ''#skein
+    #Qubit = ''#qubit
+    #NeoScrypt = ''#neoscrypt
+    #X11 = ''#x11
     #MyriadGroestl = ''
-    Groestl = ''
-    #Nist5 = ''
+    #Groestl = ''
+    #Keccak = ''
+    #Bitcore = ''
+    #Blake2s = ''
+    #Sib = ''
+    X17 = ''
+    #Quark = ''
+    #Hmq1725 = ''
+    #Veltor = ''
+    #X11evo = ''
+    #Timetravel = ''
+    #Blakecoin = ''
+    #Lbry = ''
+    #C11 = ''
+    Nist5 = ''
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

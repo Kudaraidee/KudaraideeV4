@@ -2,23 +2,7 @@ $Path = '.\Bin\NVIDIA-Hsrminer\hsrminer_neoscrypt_fork_hp.exe'
 $Uri = 'https://github.com/justaminer/hsrm-fork/raw/master/hsrminer_neoscrypt_fork_hp.zip'
 
 $Commands = [PSCustomObject]@{
-    Lyra2z = ''
-    Equihash = ''
-    Cryptonight = ''
-    Ethash = ''
-    Sia = ''
-    Yescrypt = ''
-    BlakeVanilla = ''
-    Lyra2RE2 = ''
-    Skein = ''
-    Qubit = ''
     NeoScrypt = ''
-    X11 = ''
-    MyriadGroestl = ''
-    Groestl = ''
-    Keccak = ''
-    Scrypt = ''
-    Nist5 = ''
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

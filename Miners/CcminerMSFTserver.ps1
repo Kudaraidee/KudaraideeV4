@@ -1,7 +1,7 @@
 . .\Include.ps1
 
-$Path = ".\Bin\NVIDIA-RavenMiner\RavenMiner.exe"
-$Uri = "https://github.com/MSFTserver/RavenMiner/releases/download/2.2.5-RVN/RavenMiner-2.2.5.zip"
+$Path = ".\Bin\NVIDIA-MSFTserver\ccminer-x64.exe"
+$Uri = "https://github.com/MSFTserver/ccminer/releases/download/2.2.5-rvn/ccminer-x64-2.2.5-rvn-cuda9.7z"
 
 $Commands = [PSCustomObject]@{
     #"phi" = " -d $SelGPUCC" #Phi
@@ -15,7 +15,7 @@ $Commands = [PSCustomObject]@{
     #"equihash" = "" #Equihash
     #"ethash" = "" #Ethash
     #"groestl" = " -d $SelGPUCC" #Groestl
-    #"hmq1725" = " -d $SelGPUCC" #hmq1725
+    "hmq1725" = " -d $SelGPUCC" #hmq1725
     #"keccak" = "" #Keccak
     #"lbry" = " -d $SelGPUCC" #Lbry
     #"lyra2v2" = "" #Lyra2RE2
@@ -35,7 +35,7 @@ $Commands = [PSCustomObject]@{
     #"x11" = "" #X11
     #"veltor" = "" #Veltor
     #"x11evo" = " -d $SelGPUCC" #X11evo
-    #"x17" = " -d $SelGPUCC" #X17
+    "x17" = " -d $SelGPUCC" #X17
     "x16r" = " -d $SelGPUCC --api-remote --api-allow=0/0" #X16r
 }
 

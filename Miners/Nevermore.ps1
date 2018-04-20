@@ -1,33 +1,11 @@
-$Path = '.\Bin\NVIDIA-Alexishsr\ccminer-hsr.exe'
-$Uri = 'http://ccminer.org/preview/ccminer-hsr-alexis-x86-cuda8.7z'
+$Path = '.\Bin\NVIDIA-Nevermore\ccminer.exe'
+$Uri = 'https://github.com/brian112358/nevermore-miner/releases/download/v0.2.2/nevermore-v0.2.2-win64.zip'
+
 
 $Commands = [PSCustomObject]@{
-    #Lyra2z = ''#lyra2z
-    #Equihash = '' #equihash
-    #Sia = ''#sia
-    #Yescrypt = ''#yescrypt
-    #BlakeVanilla = ''#vanilla
-    #Lyra2RE2 = ''#lyra2v2
-    #Skein = ''#skein
-    #Qubit = ''#qubit
-    #NeoScrypt = ''#neoscrypt
-    #X11 = ''#x11
-    #MyriadGroestl = ''
-    #Groestl = ''
-    Keccak = ',d=1024 '
-    #Bitcore = ''
-    #Blake2s = ''
-    #Sib = ''
-    X17 = ''
-    #Quark = ''
-    #Hmq1725 = ''
-    #Veltor = ''
-    #X11evo = ''
-    #Timetravel = ''
-    #Blakecoin = ''
-    #Lbry = ''
-    #C11 = ''
-    Nist5 = ''
+    X16R = ' '
+    X16S = ' '
+     
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

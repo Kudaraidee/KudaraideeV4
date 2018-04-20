@@ -2,9 +2,10 @@ $Path = '.\Bin\NVIDIA-Anxmod\ccminer.exe'
 $Uri = 'https://github.com/216k155/ccminer-phi-anxmod/releases/download/ccminer%2Fphi-1.0/ccminer-phi-1.0.zip'
 
 $Commands = [PSCustomObject]@{
-    "Phi" = " -i 20 -d $SelGPUCC --api-remote" #Phi
+    "Phi" = " -i 20 --api-remote" #Phi
     
 }
+
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 

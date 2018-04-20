@@ -2,7 +2,7 @@ $Path = '.\Bin\NVIDIA-Hsrminer\hsrminer_neoscrypt_fork_hp.exe'
 $Uri = 'https://github.com/justaminer/hsrm-fork/raw/master/hsrminer_neoscrypt_fork_hp.zip'
 
 $Commands = [PSCustomObject]@{
-    NeoScrypt = ''
+    NeoScrypt = ',d=256 '
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

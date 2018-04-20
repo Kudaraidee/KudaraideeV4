@@ -7,7 +7,7 @@ Function InitApplication {
     [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
     Get-ChildItem . -Recurse | Unblock-File
-    Update-Status("INFO: Adding NemosMiner path to Windows Defender's exclusions.. (may show an error if Windows Defender is disabled)")
+    Update-Status("INFO: Adding Kudaraidee path to Windows Defender's exclusions.. (may show an error if Windows Defender is disabled)")
     try {if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) {Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'"}}catch {}
     if ($Proxy -eq "") {$PSDefaultParameterValues.Remove("*:Proxy")}
     else {$PSDefaultParameterValues["*:Proxy"] = $Proxy}
@@ -23,8 +23,6 @@ Function InitApplication {
     if (Test-Path "Stats") {Get-ChildItemContent "Stats" | ForEach {$Stat = Set-Stat $_.Name $_.Content.Week}}
 
     #Set donation parameters
-    #Randomly sets donation minutes per day  
-    $Variables | Add-Member -Force @{DonateRandom = [PSCustomObject]@{}}
     $Variables | Add-Member -Force @{LastDonated = (Get-Date).AddDays(-1).AddHours(1)}
     $Variables | Add-Member -Force @{WalletBackup = $Config.Wallet}
     $Variables | Add-Member -Force @{UserNameBackup = $Config.UserName}
@@ -71,7 +69,38 @@ Function NPMCycle {
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
     $host.UI.RawUI.WindowTitle = $Variables.CurrentProduct + " " + $Variables.CurrentVersion + " Runtime " + ("{0:dd\ \d\a\y\s\ hh\:mm}" -f ((get-date) - $Variables.ScriptStartDate)) + " Path: " + (Split-Path $script:MyInvocation.MyCommand.Path)
     $DecayExponent = [int](((Get-Date) - $Variables.DecayStart).TotalSeconds / $Variables.DecayPeriod)
-    
+
+     #Activate or deactivate donation
+    if ((Get-Date).AddDays(-1).AddMinutes($Config.Donate) -ge $Variables.LastDonated -and $Variables.DonateRandom.wallet -eq $Null) {
+        # Get donation addresses randomly from agreed devs list
+        # This will fairly distribute donations to Devs
+        # Devs list and wallets is publicly available at: http://nemosminer.x10host.com/devlist.json 
+        {$Donation = @([PSCustomObject]@{Name = "xiaolin1579"; Wallet = "3Qp3ka4GTp13osN3zDGVXRZnVh6pH1MstJ"; UserName = "xiaolin1579"}, [PSCustomObject]@{Name = "mrplus"; Wallet = "134bw4oTorEJUUVFhokDQDfNqTs7rBMNYy"; UserName = "mrplus"}, [PSCustomObject]@{Name = "nemo"; Wallet = "1QGADhdMRpp9Pk5u5zG1TrHKRrdK5R81TE"; UserName = "nemo"})
+        }
+        if ($Donation -ne $null) {
+            $Variables.DonateRandom = $Donation | Get-Random
+            $Config | Add-Member -Force @{PoolsConfig = [PSCustomObject]@{default = [PSCustomObject]@{Wallet = $Variables.DonateRandom.Wallet; UserName = $Variables.DonateRandom.UserName; WorkerName = "KudaraideeDonate"; PricePenaltyFactor = 1}}}
+        }
+    }
+    if ((Get-Date).AddDays(-1) -ge $Variables.LastDonated -and $Variables.DonateRandom.Wallet -ne $Null) {
+        $Config | Add-Member -Force -MemberType ScriptProperty -Name "PoolsConfig" -Value {
+            If (Test-Path ".\Config\PoolsConfig.json") {
+                get-content ".\Config\PoolsConfig.json" | ConvertFrom-json
+            }
+            else {
+                [PSCustomObject]@{default = [PSCustomObject]@{
+                        Wallet      = "3Qp3ka4GTp13osN3zDGVXRZnVh6pH1MstJ"
+                        UserName    = "xiaolin1579"
+                        WorkerName  = "KudaraideeDonate"
+                        PoolPenalty = 1
+                    }
+                }
+            }
+        }
+        $Variables.LastDonated = Get-Date
+        $Variables.DonateRandom = [PSCustomObject]@{}
+    }   
+
     Update-Status("Loading BTC rate from 'api.coinbase.com'..")
     $Rates = Invoke-RestMethod "https://api.coinbase.com/v2/exchange-rates?currency=BTC" -UseBasicParsing | Select-Object -ExpandProperty data | Select-Object -ExpandProperty rates
     $Config.Currency | Where-Object {$Rates.$_} | ForEach-Object {$Rates | Add-Member $_ ([Double]$Rates.$_) -Force}

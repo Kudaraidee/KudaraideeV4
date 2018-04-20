@@ -4,24 +4,24 @@ $Path = ".\Bin\NVIDIA-MSFTserver\ccminer-x64.exe"
 $Uri = "https://github.com/MSFTserver/ccminer/releases/download/2.2.5-rvn/ccminer-x64-2.2.5-rvn-cuda9.7z"
 
 $Commands = [PSCustomObject]@{
-    #"phi" = " -d $SelGPUCC" #Phi
-    #"bitcore" = " -d $SelGPUCC" #Bitcore
-    #"jha" = " -d $SelGPUCC" #Jha
-    #"blake2s" = " -d $SelGPUCC" #Blake2s
-    #"blakecoin" = " -d $SelGPUCC" #Blakecoin
+    #"phi" = " " #Phi
+    #"bitcore" = " " #Bitcore
+    #"jha" = " " #Jha
+    #"blake2s" = " " #Blake2s
+    #"blakecoin" = " " #Blakecoin
     #"vanilla" = "" #BlakeVanilla
-    #"cryptonight" = " -i 10.5 -l 8x120 --bfactor=8 -d $SelGPUCC --api-remote" #Cryptonight
+    #"cryptonight" = " -i 10.5 -l 8x120 --bfactor=8  --api-remote" #Cryptonight
     #"decred" = "" #Decred
     #"equihash" = "" #Equihash
     #"ethash" = "" #Ethash
-    #"groestl" = " -d $SelGPUCC" #Groestl
-    "hmq1725" = " -d $SelGPUCC" #hmq1725
+    #"groestl" = " " #Groestl
+    #"hmq1725" = ",d=128 -i 20" #hmq1725
     #"keccak" = "" #Keccak
-    #"lbry" = " -d $SelGPUCC" #Lbry
+    #"lbry" = " " #Lbry
     #"lyra2v2" = "" #Lyra2RE2
-    #"lyra2z" = " -d $SelGPUCC --api-remote --api-allow=0/0 --submit-stale" #Lyra2z
+    #"lyra2z" = "  --api-remote --submit-stale" #Lyra2z
     #"myr-gr" = "" #MyriadGroestl
-    #"neoscrypt" = " -d $SelGPUCC" #NeoScrypt
+    #"neoscrypt" = " " #NeoScrypt
     #"nist5" = "" #Nist5
     #"pascal" = "" #Pascal
     #"qubit" = "" #Qubit
@@ -29,14 +29,14 @@ $Commands = [PSCustomObject]@{
     #"sia" = "" #Sia
     #"sib" = "" #Sib
     #"skein" = "" #Skein
-    #"skunk" = " -d $SelGPUCC" #Skunk
-    #"timetravel" = " -d $SelGPUCC" #Timetravel
-    #"tribus" = " -d $SelGPUCC" #Tribus
+    #"skunk" = " " #Skunk
+    #"timetravel" = " " #Timetravel
+    #"tribus" = " " #Tribus
     #"x11" = "" #X11
     #"veltor" = "" #Veltor
-    #"x11evo" = " -d $SelGPUCC" #X11evo
-    "x17" = " -d $SelGPUCC" #X17
-    "x16r" = " -d $SelGPUCC --api-remote --api-allow=0/0" #X16r
+    #"x11evo" = " " #X11evo
+    #"x17" = " " #X17
+    "x16r" = "  --api-remote --api-allow=0/0" #X16r
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

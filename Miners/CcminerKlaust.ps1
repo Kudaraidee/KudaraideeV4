@@ -3,9 +3,9 @@ $Uri = 'https://github.com/KlausT/ccminer/releases/download/8.20/ccminer-820-cud
 
 $Commands = [PSCustomObject]@{
     #BlakeVanilla = ''
-    #NeoScrypt = ''
+    NeoScrypt = ' '
     #MyriadGroestl = ''
-    Groestl = ''
+    #Groestl = ''
     #Nist5 = ''
 }
 

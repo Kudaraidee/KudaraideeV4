@@ -1,6 +1,6 @@
 . .\Include.ps1
 
-$Path = ".\Bin\NVIDIA-CcminerCornz\ccminer_CP.exe"
+$Path = ".\Bin\NVIDIA-Cornz\ccminer_CP.exe"
 $Uri = "https://github.com/cornz/ccminer/releases/download/keccakc/ccminer_CP.zip"
 
 $Commands = [PSCustomObject]@{
@@ -12,15 +12,15 @@ $Commands = [PSCustomObject]@{
     #"decred" = "" #Decred
     #"equihash" = "" #Equihash
     #"ethash" = "" #Ethash
-    #"groestl" = " -d $SelGPUCC" #Groestl
+    #"groestl" = " " #Groestl
     #"hmq1725" = "" #hmq1725
     #"keccak" = "" #Keccak
     #"lbry" = "" #Lbry
-    #"lyra2v2" = " -d $SelGPUCC" #Lyra2RE2
+    #"lyra2v2" = " " #Lyra2RE2
     #"lyra2z" = "" #Lyra2z
-    #"myr-gr" = " -d $SelGPUCC" #MyriadGroestl
-    #"neoscrypt" = " -b 4068 -d $SelGPUCC" #NeoScrypt
-    #"nist5" = " -d $SelGPUCC" #Nist5
+    #"myr-gr" = " " #MyriadGroestl
+    #"neoscrypt" = " " #NeoScrypt
+    #"nist5" = " " #Nist5
     #"pascal" = "" #Pascal
     #"qubit" = "" #Qubit
     #"scrypt" = "" #Scrypt
@@ -33,7 +33,7 @@ $Commands = [PSCustomObject]@{
     #"x11evo" = "" #X11evo
     #"x17" = "" #X17
     #"yescrypt" = "" #Yescrypt
-    "keccakc" = " -d $SelGPUCC --api-remote " #Keccakc
+    "keccakc" = " --api-remote " #Keccakc
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

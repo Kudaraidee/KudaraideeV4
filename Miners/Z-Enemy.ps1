@@ -1,9 +1,12 @@
 $Path = '.\Bin\NVIDIA-ZEnemy\z-enemy.exe'
-$Uri = 'http://kudaraidee.thaiddns.com:69/DechoKocharin/Miner/z-enemy-1.05a.zip'
+$Uri = 'http://kudaraidee.thaiddns.com:69/DechoKocharin/Miner/z-enemy-1.08-release.zip'
 
 
 $Commands = [PSCustomObject]@{
+    Bitcore = ' -i 20'
+    Phi = ' -i 20'
     X16R = ' -i 20'
+    X16S = ' -i 20'
      
 }
 

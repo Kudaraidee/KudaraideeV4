@@ -1,8 +1,9 @@
 $Path = '.\Bin\NVIDIA-KlausT\ccminer.exe'
-$Uri = 'https://github.com/KlausT/ccminer/releases/download/8.20/ccminer-820-cuda91-x64.zip'
+$Uri = 'https://github.com/KlausT/ccminer/releases/download/8.21/ccminer-821-cuda91-x64.zip'
 
 $Commands = [PSCustomObject]@{
     #BlakeVanilla = ''
+    Lyra2v2 = ' '
     NeoScrypt = ' '
     #MyriadGroestl = ''
     #Groestl = ''

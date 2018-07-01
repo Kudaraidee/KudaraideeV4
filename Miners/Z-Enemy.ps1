@@ -1,5 +1,5 @@
 $Path = '.\Bin\NVIDIA-ZEnemy\z-enemy.exe'
-$Uri = 'http://kudaraidee.thaiddns.com:69/DechoKocharin/Miner/z-enemy-1.08-release.zip'
+$Uri = 'http://nemos.dx.am/opt/nemos/z-enemy.1-11-public-final_v3.7z'
 
 
 $Commands = [PSCustomObject]@{
@@ -7,7 +7,9 @@ $Commands = [PSCustomObject]@{
     Phi = ' -i 20'
     X16R = ' -i 20'
     X16S = ' -i 20'
-     
+    X17 = ' -i 20'
+    Tribus = ' -i 20'
+    Aergo = ' -i 20'
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

@@ -1,9 +1,13 @@
 {
+    "aeriumx":  "AeriumX",
+    "aergo" : "AeriumX",
     "x16r":  "X16r",
     "keccakc":  "Keccakc", 
     "hsr":  "Hsr",
     "phi":  "Phi",
+    "phi2":  "Phi2",
     "bitcore":  "Bitcore",
+    "balloon":  "Balloon",
     "polytimos":  "Poly",
     "blake":  "Blakecoin",
     "blake2s":  "Blake2s",

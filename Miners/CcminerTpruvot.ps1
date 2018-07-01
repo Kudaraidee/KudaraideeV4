@@ -1,5 +1,5 @@
 $Path = '.\Bin\NVIDIA-TPruvot\ccminer-x64.exe'
-$Uri = 'https://github.com/tpruvot/ccminer/releases/download/2.2.5-tpruvot/ccminer-x64-2.2.5-cuda9.7z'
+$Uri = 'https://github.com/tpruvot/ccminer/releases/download/2.3-tpruvot/ccminer-2.3-cuda9.7z'
 
 
 $Commands = [PSCustomObject]@{
@@ -33,6 +33,7 @@ $Commands = [PSCustomObject]@{
     Skunk = ' '
     Tribus = ' '
     Phi = ' '
+    Phi2 = ' '
     Hsr = ' '
     
 }

@@ -1,7 +1,7 @@
 . .\Include.ps1
 
 try { 
-    $phiphipool_Request = Invoke-RestMethod "http://www.phi-phi-pool.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
+	$phiphipool_Request = Invoke-WebRequest -Uri "http://phi-phi-pool.com/api/status" -UseBasicParsing | ConvertFrom-Json
 } 
 catch { return }
  
@@ -9,7 +9,7 @@ if (-not $phiphipool_Request) {return}
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
-$Locations = "US", "Europe"
+$Locations = "ASIA", "US", "Europe"
 
 $Locations | ForEach {
     $Location = $_
@@ -53,8 +53,8 @@ $Locations | ForEach {
                 Protocol      = "stratum+tcp"
                 Host          = $phiphipool_Host
                 Port          = $phiphipool_Port
-                User          = $Config.PoolsConfig.$ConfName.Wallet
-                Pass          = "$($Config.PoolsConfig.$ConfName.WorkerName),c=$Passwordcurrency"
+                User          = "$($Config.PoolsConfig.$ConfName.Wallet).$($Config.PoolsConfig.$ConfName.WorkerName)"
+                Pass          = "c=$Passwordcurrency"
                 Location      = $Location
                 SSL           = $false
             }

@@ -9,7 +9,7 @@ $Commands = [PSCustomObject]@{
     X16S = ' -i 20'
     X17 = ' -i 20'
     Tribus = ' -i 20'
-    Aergo = ' -i 20'
+    AeriumX = ' -i 20'
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

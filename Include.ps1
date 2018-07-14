@@ -56,6 +56,11 @@ Function Write-Config {
     }
 }
 
+Function Get-FreeTcpPort {
+    While (Get-NetTCPConnection -LocalPort $StartPort -EA SilentlyContinue) {$StartPort++}
+    $StartPort
+}
+
 function Set-Stat {
     param(
         [Parameter(Mandatory = $true)]

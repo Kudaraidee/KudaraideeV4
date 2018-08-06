@@ -258,6 +258,50 @@ function Get-HashRate {
 
     try {
         switch ($API) {
+            "Bminer" {
+                $Message = @{command = "summary"; parameter = ""} | ConvertTo-Json -Compress
+            
+                do {
+                    Get-HttpAsJson "http://$($Server):$Port/api/status"
+                    Param([PSCustomObject] $resjson)
+
+                    [decimal] $Hashrate = 0 # if var not initialized - this outputed to console
+                    $resjson.miners | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object 
+                    $Hashrate = [MultipleUnit]::ToValueInvariant($resjson.miners."$_".solver.solution_rate, [string]::Empty)
+                    if ($HashRate -eq $null) {$HashRates = @(); break}
+
+                    $HashRates += [Double]$HashRate * $Multiplier
+    
+                    if (-not $Safe) {break}
+    
+                    Start-Sleep $Interval
+                } while ($HashRates.Count -lt 6)
+            }
+            "cryptodredge" {
+                $Message = "summary"
+
+                do {
+                    $Client = New-Object System.Net.Sockets.TcpClient $server, $Port
+                    $Writer = New-Object System.IO.StreamWriter $Client.GetStream()
+                    $Reader = New-Object System.IO.StreamReader $Client.GetStream()
+                    $Writer.AutoFlush = $true
+
+                    $Writer.Write($Message)
+                    $Request = $Reader.ReadLine()
+
+                    $Data = $Request -split ";" | ConvertFrom-StringData
+
+                    $HashRate = if ([Double]$Data.KHS -ne 0 -or [Double]$Data.ACC -ne 0) {$Data.KHS}
+
+                    if ($HashRate -eq $null) {$HashRates = @(); break}
+
+                    $HashRates += [Double]$HashRate * $Multiplier
+
+                    if (-not $Safe) {break}
+
+                    Start-Sleep $Interval
+                } while ($HashRates.Count -lt 6)
+            }
             "xgminer" {
                 $Message = @{command = "summary"; parameter = ""} | ConvertTo-Json -Compress
             

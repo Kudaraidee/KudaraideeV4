@@ -1,14 +1,9 @@
-$Path = '.\Bin\NVIDIA-EWBF\miner.exe'
-$Uri = 'http://nemos.dx.am/opt/nemos/EWBFEquihashv0.3.7z'
+$Path = '.\Bin\NVIDIA-EWBF(ZEC)\miner.exe'
+$Uri = 'https://github.com/nanopool/ewbf-miner/releases/download/v0.3.4b/Zec.miner.0.3.4b.zip'
 
 
 $Commands = [PSCustomObject]@{
-    Equihash144 = ' --algo 144_5 --pers auto'
-    Equihash144btcz = ' --algo 144_5 --pers BitcoinZ'
-    Equihash144xsg = ' --algo 144_5 --pers sngemPoW'
-    Equihash144safe = ' --algo 144_5 --pers Safecoin'
-    Equihash144zel = ' --algo 144_5 --pers ZelProof'
-    Equihash192 = ' --algo 192_7 --pers ZERO_PoW'
+    Equihash = ' '
     
 }
 
@@ -24,6 +19,6 @@ $Commands | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | 
         Port = 42000
         Wrap = $false
         URI = $Uri
-		User = $Pools.(Get-Algorithm($_)).User
+	User = $Pools.(Get-Algorithm($_)).User
     }
 }

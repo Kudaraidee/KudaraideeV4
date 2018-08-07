@@ -1,16 +1,21 @@
 $Path = '.\Bin\NVIDIA-EWBF\miner.exe'
-$Uri = 'http://nemos.dx.am/opt/nemos/EWBFEquihashv0.3.7z'
+$Uri = 'http://nemos.dx.am/opt/nemos/EWBFEquihashminerv0.5.7z'
 
+# Automatically add Equihash coins if Equihash in algo list
+If ("equihash" -in $Config.Algorithm) {
+	(Get-Content .\Algorithms.txt | ConvertFrom-Json) | Get-Member -MemberType noteproperty | Where {$_.Name -like "equihash*"} | Foreach {
+		If ($_.Name -notin $Config.Algorithm) {
+			$Config.Algorithm += $_.Name
+		}
+	}
+}
 
 $Commands = [PSCustomObject]@{
-    Equihash144 = ' --algo 144_5 --pers auto'
-    Equihash144btcz = ' --algo 144_5 --pers BitcoinZ'
-    Equihash144xsg = ' --algo 144_5 --pers sngemPoW'
-    Equihash144safe = ' --algo 144_5 --pers Safecoin'
-    Equihash144zel = ' --algo 144_5 --pers ZelProof'
-    Equihash192 = ' --algo 192_7 --pers ZERO_PoW'
-    
+    "equihash144" = " --cuda_devices $($Config.SelGPUDSTM) --algo 144_5 --pers auto" #Equihash144
+    "equihash192" = " --cuda_devices $($Config.SelGPUDSTM) --algo 192_7 --pers ZERO_PoW" #Equihash192
+    "equihash-btg" = "--cuda_devices $($Config.SelGPUDSTM) --algo 144_5 --pers BgoldPoW" # Equihash-btg
 }
+
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
@@ -18,7 +23,7 @@ $Commands | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | 
     [PSCustomObject]@{
         Type = "NVIDIA"
         Path = $Path
-        Arguments = "--api --server $($Pools.(Get-Algorithm($_)).Host) --port $($Pools.(Get-Algorithm($_)).Port) --user $($Pools.(Get-Algorithm($_)).User) --pass $($Pools.(Get-Algorithm($_)).Pass)$($Commands.$_)"
+        Arguments = "--templimit 95 --api --server $($Pools.(Get-Algorithm($_)).Host) --port $($Pools.(Get-Algorithm($_)).Port) --user $($Pools.(Get-Algorithm($_)).User) --pass $($Pools.(Get-Algorithm($_)).Pass)$($Commands.$_)"
         HashRates = [PSCustomObject]@{(Get-Algorithm($_)) = $Stats."$($Name)_$(Get-Algorithm($_))_HashRate".Live}
         API = "EWBF"
         Port = 42000

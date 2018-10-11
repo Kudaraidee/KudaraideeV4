@@ -11,6 +11,7 @@ If ("equihash" -in $Config.Algorithm) {
 }
 
 $Commands = [PSCustomObject]@{
+    "equihash96" = " --cuda_devices $($Config.SelGPUDSTM) --algo 96_5 --pers auto" #Equihash96
     "equihash144" = " --cuda_devices $($Config.SelGPUDSTM) --algo 144_5 --pers auto" #Equihash144
     "equihash192" = " --cuda_devices $($Config.SelGPUDSTM) --algo 192_7 --pers ZERO_PoW" #Equihash192
     "equihash-btg" = "--cuda_devices $($Config.SelGPUDSTM) --algo 144_5 --pers BgoldPoW" # Equihash-btg

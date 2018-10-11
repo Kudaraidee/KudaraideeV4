@@ -14,9 +14,9 @@ $Commands = [PSCustomObject]@{
     #"ethash" = "" #Ethash
     #"groestl" = "" #Groestl
     #"hmq1725" = "" #hmq1725
-    "keccak" = ",d=1024 " #Keccak
+    "keccak" = ",d=2048 -i 20" #Keccak
     "lbry" = " --api-remote" #Lbry
-    "lyra2v2" = " --api-remote" #Lyra2RE2
+    "lyra2v2" = " -i 20 --api-remote" #Lyra2RE2
     #"lyra2z" = "" #Lyra2z
     #"myr-gr" = " --api-remote" #MyriadGroestl
     #"neoscrypt" = " -i 15 -d $SelGPUCC" #NeoScrypt
@@ -31,7 +31,7 @@ $Commands = [PSCustomObject]@{
     "c11" = " -i 21 --api-remote" #C11
     #"x11evo" = "" #X11evo
     "x11gost" = " -i 21 --api-remote" #X11gost
-    "x17" = " -i 20 --api-remote" #X17
+    #"x17" = " -i 20 --api-remote" #X17
     #"yescrypt" = "" #Yescrypt
 }
 

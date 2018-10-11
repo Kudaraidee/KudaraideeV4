@@ -19,7 +19,7 @@ $Commands = [PSCustomObject]@{
     Blake2s = ' '
     Sib = ''
     X16R = ' '
-    X16S = ' '
+    #X16S = ' '
     X17 = ' '
     Quark = ''
     Hmq1725 = ',d=128  -i 20 --api-remote --api-allow=0/0'

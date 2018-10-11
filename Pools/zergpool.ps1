@@ -19,17 +19,19 @@ $Locations | ForEach {
         $zergpool_Port = $zergpool_Request.$_.port
         $zergpool_Algorithm = Get-Algorithm $zergpool_Request.$_.name
         $zergpool_Coin = ""
-
+	$PwdCurr = if ($PoolConf.PwdCurrency) {$PoolConf.PwdCurrency}else {$Config.Passwordcurrency}
+        
         $Divisor = 1000000
 
         switch ($zergpool_Algorithm) {
-            "equihash" {$Divisor /= 1000}
-            "equihash144" {$Divisor /= 1000}
-            "equihash192" {$Divisor /= 1000}
             "balloon" {$Divisor /= 1000}
             "blake2s" {$Divisor *= 1000}
             "blakecoin" {$Divisor *= 1000}
             "decred" {$Divisor *= 1000}
+            "equihash" {$Divisor /= 1000}
+            "equihash144" {$Divisor /= 1000}
+            "equihash192" {$Divisor /= 1000}
+            "hex" {$Divisor *= 1000}
             "keccak" {$Divisor *= 1000}
             "keccakc" {$Divisor *= 1000}
         }
@@ -50,7 +52,7 @@ $Locations | ForEach {
                 Host          = $zergpool_Host
                 Port          = $zergpool_Port
                 User          = $Config.PoolsConfig.$ConfName.Wallet
-                Pass          = "$($Config.PoolsConfig.$ConfName.WorkerName),c=$Passwordcurrency"
+                Pass          = "$($Config.PoolsConfig.$ConfName.WorkerName),c=$($PwdCurr)"
                 Location      = $Location
                 SSL           = $false
             }

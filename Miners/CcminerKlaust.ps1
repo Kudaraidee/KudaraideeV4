@@ -3,8 +3,8 @@ $Uri = 'https://github.com/KlausT/ccminer/releases/download/8.21/ccminer-821-cud
 
 $Commands = [PSCustomObject]@{
     #BlakeVanilla = ''
-    Lyra2v2 = ' '
-    NeoScrypt = ' '
+    #Lyra2v2 = ' -i 20'
+    #NeoScrypt = ' -i 20'
     #MyriadGroestl = ''
     #Groestl = ''
     #Nist5 = ''
@@ -16,7 +16,7 @@ $Commands | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | 
     [PSCustomObject]@{
         Type = "NVIDIA"
         Path = $Path
-        Arguments = "-a $_ -o stratum+tcp://$($Pools.(Get-Algorithm($_)).Host):$($Pools.(Get-Algorithm($_)).Port) -u $($Pools.(Get-Algorithm($_)).User) -p $($Pools.(Get-Algorithm($_)).Pass)$($Commands.$_)"
+        Arguments = "-a $_ -o stratum+tcp://$($Pools.(Get-Algorithm($_)).Host):$($Pools.(Get-Algorithm($_)).Port) -u $($Pools.(Get-Algorithm($_)).User) -p $($Pools.(Get-Algorithm($_)).Pass),stats$($Commands.$_)"
         HashRates = [PSCustomObject]@{(Get-Algorithm($_)) = $Stats."$($Name)_$(Get-Algorithm($_))_HashRate".Live}
         API = "Ccminer"
         Port = 4068

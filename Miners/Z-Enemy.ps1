@@ -1,15 +1,21 @@
 $Path = '.\Bin\NVIDIA-ZEnemy\z-enemy.exe'
-$Uri = 'http://nemos.dx.am/opt/nemos/z-enemy.1-11-public-final_v3.7z'
+$Uri = 'http://nemos.dx.am/opt/nemos/z-enemy.1-20-cuda9.2_x64_v3.zip'
 
 
 $Commands = [PSCustomObject]@{
-    Bitcore = ' -i 20'
-    Phi = ' -i 20'
-    X16R = ' -i 20'
-    X16S = ' -i 20'
-    X17 = ' -i 20'
-    Tribus = ' -i 20'
-    AeriumX = ' -i 20'
+    AeriumX = ' -i 21'
+    Bitcore = ' -i 21'
+    bcd = ' -i 21'
+    Hex = ' -i 21'
+    Phi = ' -i 21'
+    Phi2 = ' -i 21'
+    Poly = ' -i 21'
+    renesis = ' -i 21'
+    X16R = ' -i 21'
+    X16S = ' -i 21'
+    X17 = ' -i 21'
+    Tribus = ' -i 21'
+    Xevan = ' -i 20'
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
@@ -24,6 +30,6 @@ $Commands | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | 
         Port = 4068
         Wrap = $false
         URI = $Uri
-		User = $Pools.(Get-Algorithm($_)).User
+	User = $Pools.(Get-Algorithm($_)).User
     }
 }

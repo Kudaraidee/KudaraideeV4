@@ -14,11 +14,11 @@ $Commands = [PSCustomObject]@{
     #X11 = ''#x11
     #MyriadGroestl = ''
     #Groestl = ''
-    Keccak = ',d=1024 '
+    Keccak = ',d=2048 -i 20'
     #Bitcore = ''
     #Blake2s = ''
     #Sib = ''
-    X17 = ''
+    X17 = ' -i 20'
     #Quark = ''
     #Hmq1725 = ''
     #Veltor = ''

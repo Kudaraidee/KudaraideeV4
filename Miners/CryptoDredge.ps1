@@ -4,6 +4,7 @@ $Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.8.2/Crypt
 
 $Commands = [PSCustomObject]@{
     "allium"    = "" #Allium
+    "lbk3"   = "" #Lbk3
     "lyra2v2"   = "" #Lyra2RE2
     "lyra2z"    = " --submit-stale" #Lyra2z
     "neoscrypt" = "" #NeoScrypt

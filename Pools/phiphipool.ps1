@@ -29,6 +29,7 @@ $Locations | ForEach {
         	"equihash" {$Divisor /= 1000}
         	"keccak" {$Divisor *= 1000}
         	"keccakc" {$Divisor *= 1000}
+		
 	}
 
         if ((Get-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit") -eq $null) {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.estimate_last24h / $Divisor)}

@@ -1,5 +1,5 @@
 $Path = '.\Bin\NVIDIA-TRex\t-rex.exe'
-$Uri = 'ftp://radio.r41.ru/t-rex-0.6.6-win-cuda9.1.zip'
+$Uri = 'ftp://radio.r41.ru/t-rex-0.7.0-win-cuda10.0.zip'
 
 
 $Commands = [PSCustomObject]@{

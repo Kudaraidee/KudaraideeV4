@@ -3,8 +3,8 @@ $Uri = 'https://github.com/ocminer/suprminer/releases/download/1.6/suprminer-1.6
 
 
 $Commands = [PSCustomObject]@{
-    Lyra2z = ' --api-remote --api-allow=0/0'
-    #Cryptonight = ' --api-remote --api-allow=0/0'
+    Lyra2z = ' '
+    #Cryptonight = ' '
     #Sia = ''
     #Yescrypt = ''
     #BlakeVanilla = ''
@@ -15,24 +15,24 @@ $Commands = [PSCustomObject]@{
     MyriadGroestl = ''
     Groestl = ''
     Keccakc = ' '
-    #Bitcore = ' --api-remote --api-allow=0/0'
+    #Bitcore = ' '
     Blake2s = ' '
     Sib = ''
     X16R = ' '
     #X16S = ' '
     X17 = ' '
     Quark = ''
-    Hmq1725 = ',d=128  -i 20 --api-remote --api-allow=0/0'
+    Hmq1725 = ',d=128  -i 20 '
     Veltor = ''
     X11evo = ''
-    Timetravel = ' --api-remote --api-allow=0/0'
+    Timetravel = ' '
     Blakecoin = ''
     Lbry = ''
-    Jha = ' --api-remote --api-allow=0/0'
-    Skunk = ' --api-remote --api-allow=0/0'
-    Tribus = ' --api-remote --api-allow=0/0'
-    Phi = ' --api-remote --api-allow=0/0'
-    Hsr = ' --api-remote --api-allow=0/0'
+    Jha = ' '
+    Skunk = ' '
+    Tribus = ' '
+    Phi = ' '
+    Hsr = ' '
     
 }
 
@@ -42,10 +42,10 @@ $Commands | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | 
     [PSCustomObject]@{
         Type = "NVIDIA"
         Path = $Path
-        Arguments = "-a $_ -o stratum+tcp://$($Pools.(Get-Algorithm($_)).Host):$($Pools.(Get-Algorithm($_)).Port) -u $($Pools.(Get-Algorithm($_)).User) -p $($Pools.(Get-Algorithm($_)).Pass)$($Commands.$_)"
+        Arguments = "-b $($Variables.NVIDIAMinerAPITCPPort) -a $_ -o stratum+tcp://$($Pools.(Get-Algorithm($_)).Host):$($Pools.(Get-Algorithm($_)).Port) -u $($Pools.(Get-Algorithm($_)).User) -p $($Pools.(Get-Algorithm($_)).Pass)$($Commands.$_)"
         HashRates = [PSCustomObject]@{(Get-Algorithm($_)) = $Stats."$($Name)_$(Get-Algorithm($_))_HashRate".Live}
         API = "Ccminer"
-        Port = 4068
+        Port = $Variables.NVIDIAMinerAPITCPPort
         Wrap = $false
         URI = $Uri
 		User = $Pools.(Get-Algorithm($_)).User

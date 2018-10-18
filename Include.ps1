@@ -56,11 +56,13 @@ Function Write-Config {
     }
 }
 
-Function Get-FreeTcpPort {
+Function Get-FreeTcpPort ($StartPort) {
+    # While ($Port -le ($StartPort + 10) -and !$PortFound) {try{$Null = New-Object System.Net.Sockets.TCPClient -ArgumentList 127.0.0.1,$Port;$Port++} catch {$Port;$PortFound=$True}}
+    # $UsedPorts = (Get-NetTCPConnection | ? {$_.state -eq "listen"}).LocalPort
+    # While ($StartPort -in $UsedPorts) {
     While (Get-NetTCPConnection -LocalPort $StartPort -EA SilentlyContinue) {$StartPort++}
     $StartPort
 }
-
 function Set-Stat {
     param(
         [Parameter(Mandatory = $true)]

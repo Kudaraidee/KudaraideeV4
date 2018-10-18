@@ -34,7 +34,7 @@ param(
     [Parameter(Mandatory = $false)]
     [Array]$Currency = ("THB"), #i.e. GBP,USD,AUD,NZD ect.
     [Parameter(Mandatory = $false)]
-    [Array]$Passwordcurrency = ("XGCS"), #i.e. BTC,LTC,ZEC,ETH ect.
+    [Array]$Passwordcurrency = ("BTC"), #i.e. BTC,LTC,ZEC,ETH ect.
     [Parameter(Mandatory = $false)]
     [Int]$Donate = 5, #Minutes per Day
     [Parameter(Mandatory = $false)]
@@ -58,6 +58,13 @@ param(
 
 . .\Include.ps1
 . .\Core-v4.0.ps1
+
+$Global:Config = [hashtable]::Synchronized(@{})
+$Global:Variables = [hashtable]::Synchronized(@{})
+$Global:Variables | Add-Member -Force -MemberType ScriptProperty -Name 'StatusText' -Value { $this._StatusText; $This._StatusText = @() }  -SecondValue { If (!$this._StatusText) {$this._StatusText = @()}; $this._StatusText += $args[0]; $Variables | Add-Member -Force @{RefreshNeeded = $True} }
+$Global:Variables | Add-Member -Force @{Started = $False}
+$Global:Variables | Add-Member -Force @{Paused = $False}
+$Global:Variables | Add-Member -Force @{RestartCycle = $False}
 
 Function TimerCycle_Tick() {
     $LabelStatus.Text = ""
@@ -564,7 +571,7 @@ $ConfigPageControls += $LabelPwdCurrency
 $TBPwdCurrency = New-Object system.Windows.Forms.TextBox
 $TBPwdCurrency.Tag = "Passwordcurrency"
 $TBPwdCurrency.MultiLine = $False
-# $TBPwdCurrency.Scrollbars = "Vertical" 
+# $TBPwdCurrency.Scrollbars				= "Vertical" 
 $TBPwdCurrency.text = $Config.Passwordcurrency
 $TBPwdCurrency.AutoSize = $false
 $TBPwdCurrency.width = 300
@@ -574,7 +581,7 @@ $TBPwdCurrency.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $TBPwdCurrency
 
 $LabelType = New-Object system.Windows.Forms.Label
-$LabelType.text = "Miner Type"
+$LabelType.text = "Miners Types"
 $LabelType.AutoSize = $false
 $LabelType.width = 120
 $LabelType.height = 20
@@ -582,19 +589,88 @@ $LabelType.location = New-Object System.Drawing.Point(2, 134)
 $LabelType.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $LabelType
 
-$TBType = New-Object system.Windows.Forms.TextBox
-$TBType.Tag = "Type"
-$TBType.MultiLine = $False
-# $TBType.Scrollbars				= "Vertical" 
-$TBType.text = $Type
-$TBType.AutoSize = $false
-$TBType.width = 300
-$TBType.height = 20
-$TBType.location = New-Object System.Drawing.Point(122, 134)
-$TBType.Font = 'Microsoft Sans Serif,10'
-$ConfigPageControls += $TBType
+$CheckBoxMinerTypeCPU = New-Object system.Windows.Forms.CheckBox
+$CheckBoxMinerTypeCPU.Tag = "TypeCPU"
+$CheckBoxMinerTypeCPU.text = "CPU"
+$CheckBoxMinerTypeCPU.AutoSize = $false
+$CheckBoxMinerTypeCPU.width = 60
+$CheckBoxMinerTypeCPU.height = 20
+$CheckBoxMinerTypeCPU.location = New-Object System.Drawing.Point(122, 134)
+$CheckBoxMinerTypeCPU.Font = 'Microsoft Sans Serif,10'
+$CheckBoxMinerTypeCPU.Checked = ($CheckBoxMinerTypeCPU.text -in $Config.Type)
+$ConfigPageControls += $CheckBoxMinerTypeCPU
+    
+$CheckBoxMinerTypeCPU.Add_Click( {
+        If ($This.checked -and $This.Text -notin $Config.Type) {
+            [Array]$Config.Type += $This.Text
+            # If ($Variables."$($This.Text)MinerAPITCPPort" -eq $Null){
+            If ($Variables."$($This.Text)MinerAPITCPPort" -eq $Null -or ($Variables.ActiveMinerPrograms | ? {$_.Status -eq "Running" -and $_.Type -eq $This.Text}) -eq $null) {
+                # Find available TCP Ports
+                $StartPort = 4048
+                Update-Status("Finding available TCP Port for $($This.Text)")
+                $Port = Get-FreeTcpPort($StartPort)
+                $Variables | Add-Member -Force @{"$($This.Text)MinerAPITCPPort" = $Port}
+                Update-Status("Miners API Port: $($Port)")
+                $StartPort = $Port + 1
+            }
+        }
+        else {$Config.Type = @($Config.Type | ? {$_ -ne $This.Text})}
+    })
 
+$CheckBoxMinerTypeNVIDIA = New-Object system.Windows.Forms.CheckBox
+$CheckBoxMinerTypeNVIDIA.Tag = "TypeNVIDIA"
+$CheckBoxMinerTypeNVIDIA.text = "NVIDIA"
+$CheckBoxMinerTypeNVIDIA.AutoSize = $false
+$CheckBoxMinerTypeNVIDIA.width = 70
+$CheckBoxMinerTypeNVIDIA.height = 20
+$CheckBoxMinerTypeNVIDIA.location = New-Object System.Drawing.Point(182, 134)
+$CheckBoxMinerTypeNVIDIA.Font = 'Microsoft Sans Serif,10'
+$CheckBoxMinerTypeNVIDIA.Checked = ($CheckBoxMinerTypeNVIDIA.text -in $Config.Type)
+$ConfigPageControls += $CheckBoxMinerTypeNVIDIA
 
+$CheckBoxMinerTypeNVIDIA.Add_Click( {
+        If ($This.checked -and $This.Text -notin $Config.Type) {
+            [Array]$Config.Type += $This.Text
+            If ($Variables."$($This.Text)MinerAPITCPPort" -eq $Null -or ($Variables.ActiveMinerPrograms | ? {$_.Status -eq "Running" -and $_.Type -eq $This.Text}) -eq $null) {
+                # Find available TCP Ports
+                $StartPort = 4068
+                Update-Status("Finding available TCP Port for $($This.Text)")
+                $Port = Get-FreeTcpPort($StartPort)
+                $Variables | Add-Member -Force @{"$($This.Text)MinerAPITCPPort" = $Port}
+                Update-Status("Miners API Port: $($Port)")
+                $StartPort = $Port + 1
+            }
+        }
+        else {$Config.Type = @($Config.Type | ? {$_ -ne $This.Text})}
+    })
+
+$CheckBoxMinerTypeAMD = New-Object system.Windows.Forms.CheckBox
+$CheckBoxMinerTypeAMD.Tag = "TypeAMD"
+$CheckBoxMinerTypeAMD.text = "AMD"
+$CheckBoxMinerTypeAMD.AutoSize = $false
+$CheckBoxMinerTypeAMD.width = 60
+$CheckBoxMinerTypeAMD.height = 20
+$CheckBoxMinerTypeAMD.location = New-Object System.Drawing.Point(252, 134)
+$CheckBoxMinerTypeAMD.Font = 'Microsoft Sans Serif,10'
+$CheckBoxMinerTypeAMD.Checked = ($CheckBoxMinerTypeAMD.text -in $Config.Type)
+$ConfigPageControls += $CheckBoxMinerTypeAMD
+
+$CheckBoxMinerTypeAMD.Add_Click( {
+        If ($This.checked -and $This.Text -notin $Config.Type) {
+            [Array]$Config.Type += $This.Text
+            If ($Variables."$($This.Text)MinerAPITCPPort" -eq $Null -or ($Variables.ActiveMinerPrograms | ? {$_.Status -eq "Running" -and $_.Type -eq $This.Text}) -eq $null) {
+                # Find available TCP Ports
+                $StartPort = 4068
+                Update-Status("Finding available TCP Port for $($This.Text)")
+                $Port = Get-FreeTcpPort($StartPort)
+                $Variables | Add-Member -Force @{"$($This.Text)MinerAPITCPPort" = $Port}
+                Update-Status("Miners API Port: $($Port)")
+                $StartPort = $Port + 1
+            }
+        }
+        else {$Config.Type = @($Config.Type | ? {$_ -ne $This.Text})}
+    })
+	
 $LabelDonate = New-Object system.Windows.Forms.Label
 $LabelDonate.text = "Donate (min)"
 $LabelDonate.AutoSize = $false
@@ -794,6 +870,7 @@ $CheckBoxBlazepool24hr.location = New-Object System.Drawing.Point(175, 37)
 $CheckBoxBlazepool24hr.Font = 'Microsoft Sans Serif,10'
 $CheckBoxBlazepool24hr.Checked =	$Config.PoolName -contains "blazepool24hr"
 $GroupboxPoolsControls += $CheckBoxBlazepool24hr
+
 	
 $CheckBoxHashRefinery = New-Object system.Windows.Forms.CheckBox
 $CheckBoxHashRefinery.Tag = @{name = "PoolName"; Value = "hashrefinery"}

@@ -1,3 +1,5 @@
+if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
+
 $Path = '.\Bin\NVIDIA-Anxmod\ccminer.exe'
 $Uri = 'https://github.com/216k155/ccminer-phi-anxmod/releases/download/ccminer%2Fphi-1.0/ccminer-phi-1.0.zip'
 

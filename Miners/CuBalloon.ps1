@@ -1,4 +1,5 @@
-. .\Include.ps1
+if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
+
 
 $Path = ".\Bin\NVIDIA-CuBalloon\cuballoon.exe"
 $Uri = "https://github.com/Belgarion/cuballoon/files/2143221/CuBalloon.1.0.2.Windows.zip"

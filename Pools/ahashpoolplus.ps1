@@ -1,56 +1,49 @@
-. .\Include.ps1
+if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1;RegisterLoaded(".\Include.ps1")}
 
-$PlusPath = ((split-path -parent (get-item $script:MyInvocation.MyCommand.Path).Directory) + "\BrainPlus\ahashpoolplus\ahashpoolplus.json")
 Try {
-    $ahashpool_Request = get-content $PlusPath | ConvertFrom-Json 
+    $Request = get-content ((split-path -parent (get-item $script:MyInvocation.MyCommand.Path).Directory) + "\BrainPlus\ahashpoolplus\ahashpoolplus.json") | ConvertFrom-Json
 }
 catch { return }
 
-if (-not $ahashpool_Request) {return}
+if (-not $Request) {return}
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
-
+$HostSuffix = ".mine.ahashpool.com"
+$PriceField = "actual_last24h"
+# $PriceField = "estimate_current"
+$DivisorMultiplier = 1000000
+ 
 $Location = "US"
 
-$ahashpool_Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
-    $ahashpool_Host = "$_.mine.ahashpool.com"
-    $ahashpool_Port = $ahashpool_Request.$_.port
-    $ahashpool_Algorithm = Get-Algorithm $ahashpool_Request.$_.name
-    $ahashpool_Coin = ""
+# Placed here for Perf (Disk reads)
+    $ConfName = if ($Config.PoolsConfig.$Name -ne $Null){$Name}else{"default"}
+    $PoolConf = $Config.PoolsConfig.$ConfName
 
-    $Divisor = 1000000000
-	
-    switch ($ahashpool_Algorithm) {
+$Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+    $PoolHost = "$($_)$($HostSuffix)"
+    $PoolPort = $Request.$_.port
+    $PoolAlgorithm = Get-Algorithm $Request.$_.name
 
-        "sha256" {$Divisor *= 1000000}
-        "sha256t" {$Divisor *= 1000000}
-        "blake" {$Divisor *= 1000}
-        "blake2s" {$Divisor *= 1000}
-        "blakecoin" {$Divisor *= 1000}
-        "decred" {$Divisor *= 1000}
-        "vanilla" {$Divisor *= 1000}
-        "x11" {$Divisor *= 1000}
-        "equihash" {$Divisor /= 1000}
-        "yescrypt" {$Divisor /= 1000}
-    }
+    $Divisor = $DivisorMultiplier * [Double]$Request.$_.mbtc_mh_factor
 
-    if ((Get-Stat -Name "$($Name)_$($ahashpool_Algorithm)_Profit") -eq $null) {$Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_Profit" -Value ([Double]$ahashpool_Request.$_.actual_last24h / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))}
-    else {$Stat = Set-Stat -Name "$($Name)_$($ahashpool_Algorithm)_Profit" -Value ([Double]$ahashpool_Request.$_.actual_last24h / $Divisor * (1 - ($ahashpool_Request.$_.fees / 100)))}
+    if ((Get-Stat -Name "$($Name)_$($PoolAlgorithm)_Profit") -eq $null) {$Stat = Set-Stat -Name "$($Name)_$($PoolAlgorithm)_Profit" -Value ([Double]$Request.$_.$PriceField / $Divisor * (1 - ($Request.$_.fees / 100)))}
+    else {$Stat = Set-Stat -Name "$($Name)_$($PoolAlgorithm)_Profit" -Value ([Double]$Request.$_.$PriceField / $Divisor * (1 - ($Request.$_.fees / 100)))}
 
-    $ConfName = if ($Config.PoolsConfig.$Name -ne $Null) {$Name}else {"default"}
-	
-    if ($Config.PoolsConfig.default.Wallet) {
+    $PwdCurr = if ($PoolConf.PwdCurrency) {$PoolConf.PwdCurrency}else {$Config.Passwordcurrency}
+    $WorkerName = If ($PoolConf.WorkerName -like "ID=*") {$PoolConf.WorkerName} else {"ID=$($PoolConf.WorkerName)"}
+
+    if ($PoolConf.Wallet) {
         [PSCustomObject]@{
-            Algorithm     = $ahashpool_Algorithm
-            Info          = $ahashpool_Coin
-            Price         = $Stat.Live * $Config.PoolsConfig.$ConfName.PricePenaltyFactor
+            Algorithm     = $PoolAlgorithm
+            Info          = "$ahashpool_Coin $ahashpool_Coinname"
+            Price         = $Stat.Live*$PoolConf.PricePenaltyFactor
             StablePrice   = $Stat.Week
             MarginOfError = $Stat.Week_Fluctuation
             Protocol      = "stratum+tcp"
-            Host          = $ahashpool_Host
-            Port          = $ahashpool_Port
-            User          = $Config.PoolsConfig.$ConfName.Wallet
-            Pass          = "$($Config.PoolsConfig.$ConfName.WorkerName),c=$Passwordcurrency"
+            Host          = $PoolHost
+            Port          = $PoolPort
+            User          = $PoolConf.Wallet
+            Pass          = "$($WorkerName),c=$($PwdCurr)"
             Location      = $Location
             SSL           = $false
         }

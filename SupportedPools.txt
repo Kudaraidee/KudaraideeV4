@@ -6,3 +6,7 @@ nicehash
 zergpool
 minemoney
 blazepool
+phiphipool
+blockmasters
+starpool
+nlpool

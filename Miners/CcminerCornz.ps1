@@ -1,4 +1,5 @@
-. .\Include.ps1
+if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
+
 
 $Path = ".\Bin\NVIDIA-Cornz\ccminer_CP.exe"
 $Uri = "https://github.com/cornz/ccminer/releases/download/keccakc/ccminer_CP.zip"

@@ -1,3 +1,5 @@
+if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
+
 $Path = '.\Bin\NVIDIA-Alexishsr\ccminer-hsr.exe'
 $Uri = 'http://ccminer.org/preview/ccminer-hsr-alexis-x86-cuda8.7z'
 

@@ -1,3 +1,5 @@
+if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
+
 $Path = '.\Bin\NVIDIA-Alexis\ccminer.exe'
 $Uri = 'https://github.com/nemosminer/ccminerAlexis78/releases/download/3%2F3%2F2018/ccminer-Alexis78.zip'
 

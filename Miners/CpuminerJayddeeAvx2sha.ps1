@@ -1,11 +1,12 @@
+if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
+
 $Path = ".\Bin\CPU-JayDDee\cpuminer-avx2-sha.exe"
 $Uri = "https://github.com/JayDDee/cpuminer-opt/files/1822931/cpuminer-opt-3.8.4-windows.zip"
 
 $Commands = [PSCustomObject]@{
-    #"hmq1725" = " --api-remote" #HMQ1725
-    #"lyra2z330" = " --api-remote" #Lyra2z330
-    #"yescryptr16" = " --api-remote" #YescryptR16
-    #"yescrypt" = " --api-remote" #Yescrypt
+    "lyra2z330" = " --api-remote" #Lyra2z330
+    "yescryptr16" = " --api-remote" #YescryptR16
+    "yescrypt" = " --api-remote" #Yescrypt
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

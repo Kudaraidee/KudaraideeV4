@@ -1,3 +1,5 @@
+if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
+
 $Path = '.\Bin\NVIDIA-KlausT\ccminer.exe'
 $Uri = 'https://github.com/KlausT/ccminer/releases/download/8.21/ccminer-821-cuda91-x64.zip'
 

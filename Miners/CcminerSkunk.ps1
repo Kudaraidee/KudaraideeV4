@@ -1,3 +1,5 @@
+if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
+
 $Path = ".\Bin\NVIDIA-Skunk\ccminer.exe"
 $Uri = "http://cryptomining-blog.com/wp-content/download/ccminer-skunk-krnlx.zip"
 

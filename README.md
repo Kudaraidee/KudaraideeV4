@@ -1,9 +1,11 @@
- # NemosMiner-v3.0
- Updated 2018 Mar 19
+ # Kudaraidee v4.1
+ Updated 2018 Oct 20
  
 *****
 
-NemosMiner Monitors mining pools in real-time in order to find the most profitable Algo
+**Kudaraidee v4.1 is a modified version of NemosMiner V3.5.1**
+
+Kudaraidee Monitors mining pools in real-time in order to find the most profitable Algo
 
 	 GUI and easy configuration
 	 Auto Benchmarks Each algo to get optimal speeds 
@@ -14,7 +16,7 @@ NemosMiner Monitors mining pools in real-time in order to find the most profitab
 
 Easy configuration, easy start:
 
-      Run NemosMiner-v3.0.bat
+      Run Kudaraidee.bat
 
       1. Hit the Config tab
       2. Set your Wallet address and Username
@@ -23,7 +25,7 @@ Easy configuration, easy start:
       5. Hit "Start"
 Fee:
 
-      There is a 5 minute per day fee (0.3%), that can be changed in the config (Minimum is 1 - 0 is Random 0 to 5).
+      There is a 5 minute fee to nemosminer (~ 0.3%) which can be changed in config (minimum is 1 - 0 is random 0 to 5)
 
 *****
 

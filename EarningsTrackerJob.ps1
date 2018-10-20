@@ -1,8 +1,8 @@
 <#
-NemosMiner is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+KudaraideeV4 is a free software developed by NemosMiner: you can distribute and / or modify it.
+Under the terms of the GNU General Public License as published by
+Free Software Foundation Version 3 of the license or
+(According to your choice).
 
 NemosMiner is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,10 +14,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 <#
-Product:        NemosMiner
+Product:        KudaraideeV4
 File:           EarningsTrackerJob.ps1
-version:        3.5.1
-version date:   17 October 2018
+version:        4.1
+version date:   20 October 2018
 #>
 
 # param(

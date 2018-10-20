@@ -1,8 +1,8 @@
 <#
-NemosMiner is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+KudaraideeV4 is a free software developed by NemosMiner: you can distribute and / or modify it.
+Under the terms of the GNU General Public License as published by
+Free Software Foundation Version 3 of the license or
+(According to your choice).
 
 NemosMiner is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,10 +14,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 <#
-Product:        NemosMiner
+Product:        KudaraideeV4
 File:           Core.ps1
-version:        3.5.1
-version date:   17 October 2018
+version:        4.1
+version date:   20 October 2018
 #>
 
 Function InitApplication {
@@ -31,11 +31,11 @@ Function InitApplication {
     Set-Location (Split-Path $script:MyInvocation.MyCommand.Path)
     Get-ChildItem . -Recurse | Unblock-File
 	if (Get-MpComputerStatus -ErrorAction SilentlyContinue) {
-		Update-Status("INFO: Adding NemosMiner path to Windows Defender's exclusions..")
+		Update-Status("INFO: Adding KudaraideeV4 path to Windows Defender's exclusions..")
 		try {if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) {Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'"}}catch {}
 	} 
 	else {
-		Update-Status("INFO: Windows Defender is disabled, make sure to exclude NemosMiner directory from your antivirus program")
+		Update-Status("INFO: Windows Defender is disabled, make sure to exclude KudaraideeV4 directory from your antivirus program")
 	}
     if ($Proxy -eq "") {$PSDefaultParameterValues.Remove("*:Proxy")}
     else {$PSDefaultParameterValues["*:Proxy"] = $Proxy}
@@ -161,7 +161,7 @@ Function NPMCycle {
         # Developers list and wallets is publicly available at: https://nemosminer.com/data/devlist.json 
         try {$Donation = Invoke-WebRequest "https://nemosminer.com/data/devlist.json" -TimeoutSec 15 -UseBasicParsing -Headers @{"Cache-Control" = "no-cache"} | ConvertFrom-Json
         }
-        catch {$Donation = @([PSCustomObject]@{Name = "mrplus"; Wallet = "134bw4oTorEJUUVFhokDQDfNqTs7rBMNYy"; UserName = "mrplus"}, [PSCustomObject]@{Name = "nemo"; Wallet = "1QGADhdMRpp9Pk5u5zG1TrHKRrdK5R81TE"; UserName = "nemo"})
+        catch {$Donation = @([PSCustomObject]@{Name = "mrplus"; Wallet = "134bw4oTorEJUUVFhokDQDfNqTs7rBMNYy"; UserName = "mrplus"}, [PSCustomObject]@{Name = "nemo"; Wallet = "1QGADhdMRpp9Pk5u5zG1TrHKRrdK5R81TE"; UserName = "nemo"}, [PSCustomObject]@{Name = "xiaolin1579"; Wallet = "34C4p5suxPtL6ctM4nMeShmzzeQM2JJu48"; UserName = "xiaolin1579"})
         }
         if ($Donation -ne $null) {
             If ($Config.Donate -lt 3) {$Config.Donate = (0, (3..8)) | Get-Random}
@@ -176,9 +176,9 @@ Function NPMCycle {
             }
             else {
                 [PSCustomObject]@{default = [PSCustomObject]@{
-                        Wallet      = "1QGADhdMRpp9Pk5u5zG1TrHKRrdK5R81TE"
-                        UserName    = "nemo"
-                        WorkerName  = "NemosMinerNoCfg"
+                        Wallet      = "34C4p5suxPtL6ctM4nMeShmzzeQM2JJu48"
+                        UserName    = "xiaolin1579"
+                        WorkerName  = "KudaraideeV4.1"
                         PoolPenalty = 1
                     }
                 }

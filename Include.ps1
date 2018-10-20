@@ -1,8 +1,8 @@
 <#
-NemosMiner is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+KudaraideeV4 is a free software developed by NemosMiner: you can distribute and / or modify it.
+Under the terms of the GNU General Public License as published by
+Free Software Foundation Version 3 of the license or
+(According to your choice).
 
 NemosMiner is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,10 +14,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 <#
-Product:        NemosMiner
+Product:        KudaraideeV4
 File:           include.ps1
-version:        3.5.1
-version date:   17 October 2018
+version:        4.1
+version date:   20 October 2018
 #>
 
 # New-Item -Path function: -Name ((Get-FileHash $MyInvocation.MyCommand.path).Hash) -Value {$true} -EA SilentlyContinue | out-null
@@ -130,7 +130,7 @@ Function Update-Monitoring {
     if (!$Config.MonitoringUser) { return }
 
     If ($Config.ReportToServer) {
-        $Version = "NemosMiner $($Variables.CurrentVersion.ToString())"
+        $Version = "Kudaraidee $($Variables.CurrentVersion.ToString())"
         $Status = If ($Variables.Paused) { "Paused" } else { "Running" }
         $RunningMiners = $Variables.ActiveMinerPrograms | Where-Object {$_.Status -eq "Running"}
         # Add the associated object from $Variables.Miners since we need data from that too
@@ -1053,7 +1053,7 @@ Function Autoupdate {
     Update-Status("Checking AutoUpdate")
     Update-Notifications("Checking AutoUpdate")
     # write-host "Checking autoupdate"
-    $NemosMinerFileHash = (Get-FileHash ".\NemosMiner.ps1").Hash
+    $KudaraideeFileHash = (Get-FileHash ".\Kudaraidee.ps1").Hash
     try {
         $AutoUpdateVersion = Invoke-WebRequest "https://nemosminer.com/data/autoupdate.json" -TimeoutSec 15 -UseBasicParsing -Headers @{"Cache-Control" = "no-cache"} | ConvertFrom-Json
     }
@@ -1126,7 +1126,7 @@ Function Autoupdate {
             
             # Start new instance (Wait and confirm start)
             # Kill old instance
-            If ($AutoUpdateVersion.RequireRestart -or ($NemosMinerFileHash -ne (Get-FileHash ".\NemosMiner.ps1").Hash)) {
+            If ($AutoUpdateVersion.RequireRestart -or ($NemosMinerFileHash -ne (Get-FileHash ".\Kudaraidee.ps1").Hash)) {
                 Update-Status("Starting Updated Version")
                 $StartCommand = ((gwmi win32_process -filter "ProcessID=$PID" | select commandline).CommandLine)
                 $NewKid = Invoke-WmiMethod -Class Win32_Process -Name Create -ArgumentList @($StartCommand, (Split-Path $script:MyInvocation.MyCommand.Path))
@@ -1135,8 +1135,8 @@ Function Autoupdate {
                 sleep 10
                 While (!(Get-Process -id $NewKid.ProcessId -EA silentlycontinue) -and ($waited -le 10)) {sleep 1; $waited++}
                 If (!(Get-Process -id $NewKid.ProcessId -EA silentlycontinue)) {
-                    Update-Status("Failed to start new instance of NemosMiner")
-                    Update-Notifications("NemosMiner auto updated to version $($AutoUpdateVersion.Version) but failed to restart.")
+                    Update-Status("Failed to start new instance of KudaraideeV4")
+                    Update-Notifications("KudaraideeV4 auto updated to version $($AutoUpdateVersion.Version) but failed to restart.")
                     $LabelNotifications.ForeColor = "Red"
                     return
                 }

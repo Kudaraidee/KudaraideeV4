@@ -1,5 +1,5 @@
 <#
-Kudaraidee is a free software developed by NemosMiner: you can distribute and / or modify it.
+KudaraideeV4 is a free software developed by NemosMiner: you can distribute and / or modify it.
 Under the terms of the GNU General Public License as published by
 Free Software Foundation Version 3 of the license or
 (According to your choice).

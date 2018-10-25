@@ -42,7 +42,7 @@ $Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty N
             Protocol      = "stratum+tcp"
             Host          = $PoolHost
             Port          = $PoolPort
-            User          = $PoolConf.Wallet
+            User          = "$($PoolConf.Wallet).$($PoolConf.WorkerName)"
             Pass          = "$($WorkerName),c=$($PwdCurr)"
             Location      = $Location
             SSL           = $false

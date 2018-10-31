@@ -5,8 +5,8 @@ $Uri = 'https://github.com/nemosminer/ccminerKlausT-r11-fix/releases/download/r1
 
 $Commands = [PSCustomObject]@{
  
-	"skein" = " -d $($Config.SelGPUCC)" #Skein
-	"yescryptR8" = " -d $($Config.SelGPUCC)"
+	"yescrypt" = " -d $($Config.SelGPUCC)"
+    "yescryptR8" = " -d $($Config.SelGPUCC)"
     "yescryptR16" = " -d $($Config.SelGPUCC)" #YescryptR16 #Yenten
     "yescryptR32" = " -d $($Config.SelGPUCC)" #YescryptR32 
     "yescryptR16v2" = " -d $($Config.SelGPUCC)" #PPN

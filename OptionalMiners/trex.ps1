@@ -1,13 +1,13 @@
 if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1;RegisterLoaded(".\Include.ps1")}
 
-$Path = ".\Bin\NVIDIA-trex070\t-rex.exe"
-$Uri = "https://nemosminer.com/data/optional/t-rex-0.7.0-win-cuda10.0.7z"
+$Path = ".\Bin\NVIDIA-Trex\t-rex.exe"
+$Uri = "ftp://radio.r41.ru/t-rex-0.7.2-win-cuda10.0.zip"
 
 $Commands = [PSCustomObject]@{
 "balloon" = "" #Balloon(fastest)
 "polytimos" = "" #Poly(fastest)
 "bcd" = "" #Bcd(fastest)
-"skunk" = "" #Skunk(fastest)
+"hmq1725" = "" #hmq1725(fastest)
 "hsr" = "" #Hsr(Testing)
 "bitcore" = "" #Bitcore(fastest)
 "lyra2z" = "" #Lyra2z (cryptodredge faster)
@@ -16,8 +16,10 @@ $Commands = [PSCustomObject]@{
 "x17" = "" #X17(fastest)
 "x16s" = "" #X16s(fastest)
 "x16r" = "" #X16r(fastest)
+"x22i" = "" #X22i(fastest)
+"sha256t" = "" #Sha256t(fastest)
+"skunk" = "" #Skunk(fastest)
 "sonoa" = "" #SonoA(fastest)
-"hmq1725" = "" #hmq1725(fastest)
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

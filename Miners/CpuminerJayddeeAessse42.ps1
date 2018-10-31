@@ -4,7 +4,8 @@ $Path = ".\Bin\CPU-JayDDee\cpuminer-aes-sse42.exe"
 $Uri = "https://github.com/JayDDee/cpuminer-opt/files/1822931/cpuminer-opt-3.8.4-windows.zip"
 
 $Commands = [PSCustomObject]@{
-    "lyra2z330" = " --api-remote" #Lyra2z330
+    "argon2d500" = " "
+	"lyra2z330" = " --api-remote" #Lyra2z330
     "yescryptr16" = " --api-remote" #YescryptR16
     "yescrypt" = " --api-remote" #Yescrypt
 }

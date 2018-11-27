@@ -1,57 +1,59 @@
-. .\Include.ps1
+if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1;RegisterLoaded(".\Include.ps1")}
 
 try { 
-	$phiphipool_Request = Invoke-WebRequest -Uri "http://phi-phi-pool.com/api/status" -UseBasicParsing | ConvertFrom-Json
+    $Request = Invoke-RestMethod "http://www.phi-phi-pool.com/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop 
 } 
 catch { return }
  
-if (-not $phiphipool_Request) {return}
+if (-not $Request) {return}
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
-
-$Locations = "ASIA", "US", "Europe"
-
-$Locations | ForEach {
-    $Location = $_
-
-    $phiphipool_Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | foreach {
-        $phiphipool_Host = "pool1.phi-phi-pool.com"
-        $phiphipool_Port = $phiphipool_Request.$_.port
-        $phiphipool_Algorithm = Get-Algorithm $phiphipool_Request.$_.name
-        $phiphipool_Coin = ""
-        $PwdCurr = if ($PoolConf.PwdCurrency) {$PoolConf.PwdCurrency}else {$Config.Passwordcurrency}
-
-        $Divisor = 1000000000
-
-        switch ($phiphipool_Algorithm) {
-                "blake2s" {$Divisor *= 1000}
-	        "blakecoin" {$Divisor *= 1000}
-        	"decred" {$Divisor *= 1000}
-        	"equihash" {$Divisor /= 1000}
-        	"keccak" {$Divisor *= 1000}
-        	"keccakc" {$Divisor *= 1000}
-        }
-
-        if ((Get-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit") -eq $null) {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.actual_last24h / $Divisor)}
-        else {$Stat = Set-Stat -Name "$($Name)_$($phiphipool_Algorithm)_Profit" -Value ([Double]$phiphipool_Request.$_.actual_last24h / $Divisor)}
-
-        $ConfName = if ($Config.PoolsConfig.$Name -ne $Null) {$Name}else {"default"}
-	
-        if ($Config.PoolsConfig.default.Wallet) {
-            [PSCustomObject]@{
-                Algorithm     = $phiphipool_Algorithm
-                Info          = $phiphipool
-                Price         = $Stat.Live * $Config.PoolsConfig.$ConfName.PricePenaltyFactor
-                StablePrice   = $Stat.Week
-                MarginOfError = $Stat.Fluctuation
-                Protocol      = "stratum+tcp"
-                Host          = $phiphipool_Host
-                Port          = $phiphipool_Port
-                User          = "$($Config.PoolsConfig.$ConfName.Wallet).$($Config.PoolsConfig.$ConfName.WorkerName)"
-                Pass          = "c=$($PwdCurr)"
-                Location      = $Location
-                SSL           = $false
-            }
-        }
+$HostSuffix = ".phi-phi-pool.com"
+$PriceField = "actual_last24h"
+# $PriceField = "estimate_current"
+$DivisorMultiplier = 1000000
+ 
+$Locations = "asia", "eu"
+$Locations | ForEach-Object {
+    $zpoolplus_Location = $_
+        
+    switch ($zpoolplus_Location) {
+        "eu" {$Location = "eu"} #Europe
+        "asia" {$Location = "asia"} #Asia [Thailand]
+        default {$Location = "asia"}
     }
+    
+    # Placed here for Perf (Disk reads)
+    $ConfName = if ($Config.PoolsConfig.$Name -ne $Null) {$Name}else {"default"}
+    $PoolConf = $Config.PoolsConfig.$ConfName
+
+    $Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+        $PoolHost = "$($Location)$($HostSuffix)"
+        $PoolPort = $Request.$_.port
+        $PoolAlgorithm = Get-Algorithm $Request.$_.name
+
+    $Divisor = $DivisorMultiplier * [Double]$Request.$_.mbtc_mh_factor
+
+    if ((Get-Stat -Name "$($Name)_$($PoolAlgorithm)_Profit") -eq $null) {$Stat = Set-Stat -Name "$($Name)_$($PoolAlgorithm)_Profit" -Value ([Double]$Request.$_.$PriceField / $Divisor * (1 - ($Request.$_.fees / 100)))}
+    else {$Stat = Set-Stat -Name "$($Name)_$($PoolAlgorithm)_Profit" -Value ([Double]$Request.$_.$PriceField / $Divisor * (1 - ($Request.$_.fees / 100)))}
+
+    $PwdCurr = if ($PoolConf.PwdCurrency) {$PoolConf.PwdCurrency}else {$Config.Passwordcurrency}
+    $WorkerName = If ($PoolConf.WorkerName -like "ID=*") {$PoolConf.WorkerName} else {"ID=$($PoolConf.WorkerName)"}
+
+    if ($PoolConf.Wallet) {
+        [PSCustomObject]@{
+            Algorithm     = $PoolAlgorithm
+            Price         = $Stat.Live*$PoolConf.PricePenaltyFactor
+            StablePrice   = $Stat.Week
+            MarginOfError = $Stat.Week_Fluctuation
+            Protocol      = "stratum+tcp"
+            Host          = $PoolHost
+            Port          = $PoolPort
+            User          = "$($PoolConf.Wallet).$($PoolConf.WorkerName)"
+            Pass          = "c=$($PwdCurr)"
+            Location      = $Location
+            SSL           = $false
+			}
+		}
+	}
 }

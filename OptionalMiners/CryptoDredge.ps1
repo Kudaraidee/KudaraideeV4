@@ -1,22 +1,28 @@
 if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
 
 $Path = ".\Bin\NVIDIA-CryptoDredge\CryptoDredge.exe"
-$Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.9.4/CryptoDredge_0.9.4_cuda_10.0_windows.zip"
+$Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.12.0/CryptoDredge_0.12.0_cuda_10.0_windows.zip"
 
 $Commands = [PSCustomObject]@{
     "allium"            = " " #Allium (fastetst)
 	"blake2s"			= " "
 	"bcd"				= " "
 	"c11"				= " "
+    "dedal"				= " "
     "exosis"			= " "
+	"hmq1725"			= " "
 	"lyra2v2"           = " " #Lyra2RE2 (fastest)
     "lyra2z"            = " " #Lyra2z (fastest)
     "neoscrypt"         = " " #NeoScrypt (fastest)
     "phi"               = " " #Phi
     "phi2"              = " " #Phi2 (fastest)
+    "pipe"              = " " #Pipe (fastest)
     "lbk3"              = " " #Lbk3(test)
     "skein"             = " " #Skein
     "skunk"             = " " #Skunk
+    "x16r"				= " "
+	"x16s"				= " "
+	"x22i"              = " " #X22i SUQA
     "cryptonightheavy"  = " " # CryptoNightHeavy(fastest)
     "cryptonightv7"     = " " # CryptoNightV7(fastest)
     "cryptonightmonero" = " " # Cryptonightmonero(fastest)

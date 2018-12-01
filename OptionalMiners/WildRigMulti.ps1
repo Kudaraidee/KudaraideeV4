@@ -1,13 +1,14 @@
 if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
 
 $Path = '.\Bin\AMD-WildRigMulti\wildrig.exe'
-$Uri = 'https://github.com/andru-kun/wildrig-multi/releases/download/0.12.5/wildrig-multi-0.12.5.1-beta.7z'
+$Uri = 'https://github.com/andru-kun/wildrig-multi/releases/download/0.13.4/wildrig-multi-0.13.4-beta.7z'
 
 $Commands = [PSCustomObject]@{
     bcd = '' #BitcoinDiamond
     bitcore = '' #Bitcore
-	exosis = '' #Exosis
 	c11 = '' #C11
+	dedal = '' #Dedal
+	exosis = '' #Exosis
 	geek = '' #GeekCash
 	hex = '' #XDNA
 	hmq1725 = '' #Hmq1725
@@ -21,6 +22,7 @@ $Commands = [PSCustomObject]@{
 	x16r = '' #x16r
 	x16s = '' #x16s
 	x17 = '' #x17
+	x21s = '' #x21s
 	x22i = '' #x22i
 }
 

@@ -1,18 +1,21 @@
 if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
 
 $Path = ".\Bin\NVIDIA-CryptoDredge\CryptoDredge.exe"
-$Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.12.0/CryptoDredge_0.12.0_cuda_10.0_windows.zip"
+$Uri = "https://github.com/technobyl/CryptoDredge/releases/download/v0.15.0/CryptoDredge_0.15.0_cuda_10.0_windows.zip"
 
 $Commands = [PSCustomObject]@{
     "allium"            = " " #Allium (fastetst)
 	"blake2s"			= " "
 	"bcd"				= " "
 	"c11"				= " "
-    "dedal"				= " "
+    "dedal"				= " " #Dedal (New Algorithm Numus)
     "exosis"			= " "
 	"hmq1725"			= " "
 	"lyra2v2"           = " " #Lyra2RE2 (fastest)
+    "lyra2v3"           = " " #Lyra2V3 (New Algorithm Vertcoin)
+    "lyra2vc0ban"       = " " #Lyra2vc0banHash (fastest)
     "lyra2z"            = " " #Lyra2z (fastest)
+    "mtp"            	= " " #MTP (fastest)
     "neoscrypt"         = " " #NeoScrypt (fastest)
     "phi"               = " " #Phi
     "phi2"              = " " #Phi2 (fastest)
@@ -20,8 +23,9 @@ $Commands = [PSCustomObject]@{
     "lbk3"              = " " #Lbk3(test)
     "skein"             = " " #Skein
     "skunk"             = " " #Skunk
-    "x16r"				= " "
-	"x16s"				= " "
+    "x16r"				= " " #X16R
+	"x16s"				= " " #X16S
+	"x21s"				= " " #X21S RITO
 	"x22i"              = " " #X22i SUQA
     "cryptonightheavy"  = " " # CryptoNightHeavy(fastest)
     "cryptonightv7"     = " " # CryptoNightV7(fastest)

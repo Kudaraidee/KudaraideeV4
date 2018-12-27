@@ -1,28 +1,32 @@
 if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1;RegisterLoaded(".\Include.ps1")}
 
 $Path = ".\Bin\NVIDIA-Trex\t-rex.exe"
-$Uri = "https://github.com/trexminer/T-Rex/releases/download/0.8.3/t-rex-0.8.3-win-cuda10.0.zip"
+$Uri = "https://github.com/trexminer/T-Rex/releases/download/0.8.9/t-rex-0.8.9-win-cuda10.0.zip"
 
 $Commands = [PSCustomObject]@{
-"balloon" = "" #Balloon(fastest)
-"bcd" = "" #Bcd(fastest)
-"bitcore" = "" #Bitcore(fastest)
-"c11" = "" #C11(fastest)
-"dedal" = "" #Dedal(fastest)
+"astralhash" = "" #Astralhash(GlobalToken)
+"balloon" = "" #Balloon
+"bcd" = "" #Bcd
+"bitcore" = "" #Bitcore
+"c11" = "" #C11
+"dedal" = "" #Dedal
 "geek"= "" #Geekcash
-"hmq1725" = "" #hmq1725(fastest)
+"hmq1725" = "" #hmq1725
 "hsr" = "" #Hsr(Testing)
-"lyra2z" = "" #Lyra2z (cryptodredge faster)
-"polytimos" = "" #Poly(fastest)
-"sha256t" = "" #Sha256t(fastest)
-"skunk" = "" #Skunk(fastest)
-"sonoa" = "" #SonoA(fastest)
-"tribus" = "" #Tribus(CryptoDredge faster)
-"x16r" = "" #X16r(fastest)
-"x16s" = "" #X16s(fastest)
-"x17" = "" #X17(fastest)
-"x21s" = "" #X21S(fastest)
-"x22i" = "" #X22I(fastest)
+"jeonghash" = "" #Jeonghash(GlobalToken)
+"lyra2z" = "" #Lyra2z 
+"padihash" = "" #Padihash(GlobalToken)
+"pawelhash " = "" #Pawelhash(GlobalToken)
+"polytimos" = "" #Poly
+"sha256t" = "" #Sha256t
+"skunk" = "" #Skunk
+"sonoa" = "" #SonoA
+"tribus" = "" #Tribus
+"x16r" = "" #X16r
+"x16s" = "" #X16s
+"x17" = "" #X17
+"x21s" = "" #X21S
+"x22i" = "" #X22I
 }
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName

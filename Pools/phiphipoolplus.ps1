@@ -9,7 +9,8 @@ if (-not $Request) {return}
 
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $HostSuffix = "pool1.phi-phi-pool.com"
-$PriceField = "estimate_last24h"
+$PriceField = "actual_last24h"
+# $PriceField = "estimate_current"
 $DivisorMultiplier = 1000000
  
 $Locations = "asia", "eu"
@@ -19,7 +20,6 @@ $Locations | ForEach-Object {
     switch ($zpoolplus_Location) {
         "eu" {$Location = "eu"} #Europe
         "asia" {$Location = "asia"} #Asia [Thailand]
-        "us" {$Location = "eu"} #USA
         default {$Location = "asia"}
     }
     

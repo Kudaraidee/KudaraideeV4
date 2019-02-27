@@ -1,7 +1,7 @@
 if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1;RegisterLoaded(".\Include.ps1")}
 
 $Path = ".\Bin\NVIDIA-Trex\t-rex.exe"
-$Uri = "https://github.com/trexminer/T-Rex/releases/download/0.8.9/t-rex-0.8.9-win-cuda10.0.zip"
+$Uri = "https://github.com/trexminer/T-Rex/releases/download/0.9.2/t-rex-0.9.2-win-cuda10.0.zip"
 
 $Commands = [PSCustomObject]@{
 "astralhash" = "" #Astralhash(GlobalToken)
@@ -23,6 +23,8 @@ $Commands = [PSCustomObject]@{
 "sonoa" = "" #SonoA
 "tribus" = "" #Tribus
 "x16r" = "" #X16r
+"x16rt" = "" #X16RT (GIN)
+"veil" = "" #X16RT (VEIL)
 "x16s" = "" #X16s
 "x17" = "" #X17
 "x21s" = "" #X21S

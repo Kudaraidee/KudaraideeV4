@@ -1,6 +1,6 @@
 if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1; RegisterLoaded(".\Include.ps1")}
 
-$Path = '.\Bin\NVIDIA-Zjazz_AMD\zjazz_amd.exe'
+$Path = '.\Bin\AMD-Zjazz\zjazz_amd.exe'
 $Uri = 'https://github.com/zjazz/zjazz_amd_miner/releases/download/v1.2/zjazz_amd_win64_1.2.zip'
 
 

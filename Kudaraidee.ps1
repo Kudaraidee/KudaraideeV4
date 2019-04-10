@@ -48,6 +48,8 @@ param(
     [Parameter(Mandatory = $false)]
     [String]$SelGPUCC = "0,1",
     [Parameter(Mandatory = $false)]
+    [String]$SelGPUSG = "0,1",
+    [Parameter(Mandatory = $false)]
     [Array]$Algorithm = $null, #i.e. Ethash,Equihash,Cryptonight ect.
     [Parameter(Mandatory = $false)]
     [Array]$MinerName = $null, 
@@ -65,6 +67,10 @@ param(
     [Int]$Delay = 1, #seconds before opening each miner
     [Parameter(Mandatory = $false)]
     [Int]$GPUCount = 1, # Number of GPU on the system
+    [Parameter(Mandatory = $false)]
+    [Int]$AMDGPUCount = 1, # Number of AMD GPU on the system
+    [Parameter(Mandatory = $false)]
+    [Int]$NVIDIAGPUCount = 1, # Number of NVIDIA GPU on the system
     [Parameter(Mandatory = $false)]
     [Int]$ActiveMinerGainPct = 5, # percent of advantage that active miner has over candidates in term of profit
     [Parameter(Mandatory = $false)]
@@ -393,11 +399,16 @@ Function PrepareWriteConfig {
     $ConfigPageControls | ? {(($_.gettype()).Name -eq "TextBox")} | foreach {$Config | Add-Member -Force @{$_.Tag = $_.Text}}
     $MonitoringSettingsControls | ? {(($_.gettype()).Name -eq "CheckBox")} | foreach {$Config | Add-Member -Force @{$_.Tag = $_.Checked}}
     $MonitoringSettingsControls | ? {(($_.gettype()).Name -eq "TextBox")} | foreach {$Config | Add-Member -Force @{$_.Tag = $_.Text}}
-    $ConfigPageControls | ? {(($_.gettype()).Name -eq "TextBox") -and ($_.Tag -eq "GPUCount")} | foreach {
+    $ConfigPageControls | ? {(($_.gettype()).Name -eq "TextBox") -and ($_.Tag -eq "NVIDIAGPUCount")} | foreach {
         $Config | Add-Member -Force @{$_.Tag = [Int]$_.Text}
         If ($CheckBoxDisableGPU0.checked -and [Int]$_.Text -gt 1) {$FirstGPU = 1}else {$FirstGPU = 0}
-        $Config | Add-Member -Force @{SelGPUCC = (($FirstGPU..($_.Text - 1)) -join ",")}
+		$Config | Add-Member -Force @{SelGPUCC = (($FirstGPU..($_.Text - 1)) -join ",")}
         $Config | Add-Member -Force @{SelGPUDSTM = (($FirstGPU..($_.Text - 1)) -join " ")}
+    }
+    $ConfigPageControls | ? {(($_.gettype()).Name -eq "TextBox") -and ($_.Tag -eq "AMDGPUCount")} | foreach {
+        $Config | Add-Member -Force @{$_.Tag = [Int]$_.Text}
+        If ($CheckBoxDisableGPU0.checked -and [Int]$_.Text -gt 1) {$FirstGPU = 3}else {$FirstGPU = 0}
+		$Config | Add-Member -Force @{SelGPUSG = (($FirstGPU..($_.Text - 1)) -join ",")}
     }
     $ConfigPageControls | ? {(($_.gettype()).Name -eq "TextBox") -and ($_.Tag -eq "Algorithm")} | foreach {
         $Config | Add-Member -Force @{$_.Tag = @($_.Text -split ",")}
@@ -469,7 +480,24 @@ $MainForm.add_Shown( {
             $TBGPUCount.Text = $Config.GPUCount
             PrepareWriteConfig
         }
-        # Start on load if Autostart
+        
+		If ($Config.NVIDIAGPUCount -eq $null -or $Config.NVIDIAGPUCount -lt 1) {
+            If ($Config -eq $null) {$Config = [hashtable]::Synchronized(@{})
+            }
+            $Config | Add-Member -Force @{NVIDIAGPUCount = DetectNVIDIAGPUCount}
+            $TBNVIDIAGPUCount.Text = $Config.NVIDIAGPUCount
+            PrepareWriteConfig
+        }
+        
+		If ($Config.AMDGPUCount -eq $null -or $Config.AMDGPUCount -lt 1) {
+            If ($Config -eq $null) {$Config = [hashtable]::Synchronized(@{})
+            }
+            $Config | Add-Member -Force @{AMDGPUCount = DetectAMDGPUCount}
+            $TBNVIDIAGPUCount.Text = $Config.AMDGPUCount
+            PrepareWriteConfig
+        }
+        
+		# Start on load if Autostart
         If ($Config.Autostart) {
             If ($Config.StartPaused) {
                 $Variables.Paused = $True
@@ -537,6 +565,7 @@ $MainForm | Add-Member -Name "Config" -Value $Config -MemberType NoteProperty -F
 
 $SelGPUDSTM = $Config.SelGPUDSTM
 $SelGPUCC = $Config.SelGPUCC
+$SelGPUSG = $Config.SelGPUSG
 $MainForm | Add-Member -Name "Variables" -Value $Variables -MemberType NoteProperty -Force
 
 $Variables | Add-Member -Force @{CurrentProduct = (Get-Content .\Version.json | ConvertFrom-Json).Product}
@@ -894,14 +923,53 @@ $ConfigPageControls += $LabelGPUCount
 $TBGPUCount = New-Object system.Windows.Forms.TextBox
 $TBGPUCount.Tag = "GPUCount"
 $TBGPUCount.MultiLine = $False
-# $TBGPUCount.Scrollbars                = "Vertical" 
 $TBGPUCount.text = $Config.GPUCount
 $TBGPUCount.AutoSize = $false
-$TBGPUCount.width = 50
+$TBGPUCount.width = 35
 $TBGPUCount.height = 20
 $TBGPUCount.location = New-Object System.Drawing.Point(122, 90)
 $TBGPUCount.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $TBGPUCount
+
+$LabelNVIDIAGPUCount = New-Object system.Windows.Forms.Label
+$LabelNVIDIAGPUCount.text = "Nvidia"
+$LabelNVIDIAGPUCount.AutoSize = $false
+$LabelNVIDIAGPUCount.width = 45
+$LabelNVIDIAGPUCount.height = 20
+$LabelNVIDIAGPUCount.location = New-Object System.Drawing.Point(157, 90)
+$LabelNVIDIAGPUCount.Font = 'Microsoft Sans Serif,10'
+$ConfigPageControls += $LabelNVIDIAGPUCount
+
+$TBNVIDIAGPUCount = New-Object system.Windows.Forms.TextBox
+$TBNVIDIAGPUCount.Tag = "NVIDIAGPUCount"
+$TBNVIDIAGPUCount.MultiLine = $False
+$TBNVIDIAGPUCount.text = $Config.NVIDIAGPUCount
+$TBNVIDIAGPUCount.AutoSize = $false
+$TBNVIDIAGPUCount.width = 35
+$TBNVIDIAGPUCount.height = 20
+$TBNVIDIAGPUCount.location = New-Object System.Drawing.Point(202, 90)
+$TBNVIDIAGPUCount.Font = 'Microsoft Sans Serif,10'
+$ConfigPageControls += $TBNVIDIAGPUCount
+
+$LabelAMDGPUCount = New-Object system.Windows.Forms.Label
+$LabelAMDGPUCount.text = "AMD"
+$LabelAMDGPUCount.AutoSize = $false
+$LabelAMDGPUCount.width = 45
+$LabelAMDGPUCount.height = 20
+$LabelAMDGPUCount.location = New-Object System.Drawing.Point(237, 90)
+$LabelAMDGPUCount.Font = 'Microsoft Sans Serif,10'
+$ConfigPageControls += $LabelAMDGPUCount
+
+$TBAMDGPUCount = New-Object system.Windows.Forms.TextBox
+$TBAMDGPUCount.Tag = "AMDGPUCount"
+$TBAMDGPUCount.MultiLine = $False
+$TBAMDGPUCount.text = $Config.AMDGPUCount
+$TBAMDGPUCount.AutoSize = $false
+$TBAMDGPUCount.width = 35
+$TBAMDGPUCount.height = 20
+$TBAMDGPUCount.location = New-Object System.Drawing.Point(282, 90)
+$TBAMDGPUCount.Font = 'Microsoft Sans Serif,10'
+$ConfigPageControls += $TBAMDGPUCount
 
 $CheckBoxDisableGPU0 = New-Object system.Windows.Forms.CheckBox
 $CheckBoxDisableGPU0.Tag = "DisableGPU0"
@@ -909,7 +977,7 @@ $CheckBoxDisableGPU0.text = "Disable GPU0"
 $CheckBoxDisableGPU0.AutoSize = $false
 $CheckBoxDisableGPU0.width = 140
 $CheckBoxDisableGPU0.height = 20
-$CheckBoxDisableGPU0.location = New-Object System.Drawing.Point(177, 90)
+$CheckBoxDisableGPU0.location = New-Object System.Drawing.Point(560, 198)
 $CheckBoxDisableGPU0.Font = 'Microsoft Sans Serif,10'
 $CheckBoxDisableGPU0.Checked = $Config.DisableGPU0
 $ConfigPageControls += $CheckBoxDisableGPU0
@@ -922,7 +990,9 @@ $ButtonDetectGPU.location = New-Object System.Drawing.Point(320, 90)
 $ButtonDetectGPU.Font = 'Microsoft Sans Serif,10'
 $ConfigPageControls += $ButtonDetectGPU
 
-$ButtonDetectGPU.Add_Click( {$TBGPUCount.text = DetectGPUCount})
+$ButtonDetectGPU.Add_Click( {$TBGPUCount.text = DetectGPUCount} )
+$ButtonDetectGPU.Add_Click( {$TBNVIDIAGPUCount.text = DetectNVIDIAGPUCount})
+$ButtonDetectGPU.Add_Click( {$TBAMDGPUCount.text = DetectAMDGPUCount} )
 
 $LabelAlgos = New-Object system.Windows.Forms.Label
 $LabelAlgos.text = "Algorithm"

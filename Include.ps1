@@ -322,6 +322,37 @@ Function DetectGPUCount {
     $DetectedGPU | foreach {Update-Status("$($i): $($_.Name)") | Out-Null; $i++}
     Update-Status("Found $($DetectedGPUCount) GPU(s)")
     $DetectedGPUCount
+		
+}
+
+Function DetectNVIDIAGPUCount {
+    Update-Status("Fetching Nvidia GPU Count")
+    $DetectedNVIDIAGPU = @()
+    try {
+        $DetectedNVIDIAGPU += @(Get-WmiObject Win32_PnPEntity | Select Name, Manufacturer, PNPClass, Availability, ConfigManagerErrorCode, ConfigManagerUserConfig | Where {$_.Manufacturer -like "*NVIDIA*" -and $_.PNPClass -like "*display*" -and $_.ConfigManagerErrorCode -ne "22"}) 
+    }
+    catch { Update-Status("NVIDIA Detection failed") }
+    $DetectedNVIDIAGPUCount = $DetectedNVIDIAGPU.Count
+    $i = 0
+	$DetectedNVIDIAGPU | foreach {Update-Status("$($i): $($_.Name)") | Out-Null; $i++}
+    Update-Status("Found $($DetectedNVIDIAGPUCount) GPU(s)")
+    $DetectedNVIDIAGPUCount
+		
+}
+
+Function DetectAMDGPUCount {
+    Update-Status("Fetching AMD GPU Count")
+    $DetectedAMDGPU = @()
+    try {
+        $DetectedAMDGPU += @(Get-WmiObject Win32_PnPEntity | Select Name, Manufacturer, PNPClass, Availability, ConfigManagerErrorCode, ConfigManagerUserConfig | Where {$_.Manufacturer -like "*Advanced Micro Devices*" -and $_.PNPClass -like "*display*" -and $_.ConfigManagerErrorCode -ne "22"}) 
+    }
+    catch { Update-Status("NVIDIA Detection failed") }
+    $DetectedAMDGPUCount = $DetectedAMDGPU.Count
+    $i = 0
+	$DetectedAMDGPU | foreach {Update-Status("$($i): $($_.Name)") | Out-Null; $i++}
+    Update-Status("Found $($DetectedAMDGPUCount) GPU(s)")
+    $DetectedAMDGPUCount
+		
 }
 
 Function Load-Config {

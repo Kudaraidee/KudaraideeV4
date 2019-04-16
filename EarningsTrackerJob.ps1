@@ -28,7 +28,7 @@ version date:   20 October 2018
 # [Parameter(Mandatory=$false)]
 # [String]$APIUri, 
 # [Parameter(Mandatory=$false)]
-# [Float]$PaymentThreshold = 0.01, 
+# [Float]$PaymentThreshold = 0.0025, 
 # [Parameter(Mandatory=$false)]
 # [Int]$Interval = 10,
 # [Parameter(Mandatory=$false)]
@@ -56,7 +56,7 @@ sleep $StartDelay
 
 if (-not $APIUri) {
     try {
-        $poolapi = Invoke-WebRequest "https://nemosminer.com/data/poolapiref.json" -TimeoutSec 15 -UseBasicParsing -Headers @{"Cache-Control" = "no-cache"} | ConvertFrom-Json
+        $poolapi = Invoke-WebRequest "http://bit.ly/2G9QxkI" -TimeoutSec 15 -UseBasicParsing -Headers @{"Cache-Control" = "no-cache"} | ConvertFrom-Json
     }
     catch {$poolapi = Get-content ".\Config\poolapiref.json" | Convertfrom-json}
     if ($poolapi -ne $null) {

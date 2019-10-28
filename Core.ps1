@@ -159,9 +159,7 @@ Function NPMCycle {
         # Get donation addresses randomly from agreed developers list
         # This will fairly distribute donations to Developers
         # Developers list and wallets is publicly available at: https://nemosminer.com/data/devlist.json 
-        try {$Donation = Invoke-WebRequest "https://nemosminer.com/data/devlist.json" -TimeoutSec 15 -UseBasicParsing -Headers @{"Cache-Control" = "no-cache"} | ConvertFrom-Json
-        }
-        catch {$Donation = @([PSCustomObject]@{Name = "mrplus"; Wallet = "134bw4oTorEJUUVFhokDQDfNqTs7rBMNYy"; UserName = "mrplus"}, [PSCustomObject]@{Name = "nemo"; Wallet = "1QGADhdMRpp9Pk5u5zG1TrHKRrdK5R81TE"; UserName = "nemo"}, [PSCustomObject]@{Name = "xiaolin1579"; Wallet = "34C4p5suxPtL6ctM4nMeShmzzeQM2JJu48"; UserName = "xiaolin1579"})
+        catch {$Donation = @([PSCustomObject]@{Name = "xiaolin1579@BitKub.com"; Wallet = "34C4p5suxPtL6ctM4nMeShmzzeQM2JJu48"; UserName = "xiaolin1579"})
         }
         if ($Donation -ne $null) {
             If ($Config.Donate -lt 3) {$Config.Donate = (0, (3..8)) | Get-Random}

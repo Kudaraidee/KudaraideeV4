@@ -1,7 +1,10 @@
 if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1;RegisterLoaded(".\Include.ps1")}
 
-$Path = ".\Bin\NVIDIA-Trex\t-rex.exe"
-$Uri = "https://github.com/trexminer/T-Rex/releases/download/0.9.2/t-rex-0.9.2-win-cuda10.0.zip"
+$ManualUri = "https://bitcointalk.org/index.php?topic=4432704.0"
+$Version = "0.14.6"
+
+$Path = ".\Bin\NVIDIA-Trex_$($Version)\t-rex.exe"
+$Uri = "https://github.com/trexminer/T-Rex/releases/download/$($Version)/t-rex-$($Version)-win-cuda10.0.zip"
 
 $Commands = [PSCustomObject]@{
 "astralhash" = " -a astralhash" #Astralhash(GlobalToken)
@@ -12,6 +15,7 @@ $Commands = [PSCustomObject]@{
 "dedal" = " -a dedal" #Dedal
 "geek"= " -a geek" #Geekcash
 "hmq1725" = " -a hmq1725" #hmq1725
+"honeycomb" = " -a honeycomb" #HoneyComb
 "hsr" = " -a hsr" #Hsr(Testing)
 "jeonghash" = " -a jeonghash" #Jeonghash(GlobalToken)
 "lyra2z" = " -a lyra2z" #Lyra2z 
@@ -23,6 +27,7 @@ $Commands = [PSCustomObject]@{
 "sonoa" = " -a sonoa" #SonoA
 "tribus" = " -a tribus" #Tribus
 "x16r" = " -a x16r" #X16r
+"x16rv2" = " -a x16r" #X16rV2
 "x16rt" = " -a x16rt" #X16RT (GIN)
 "veil" = " -a x16rt" #X16RT (VEIL)
 "x16s" = " -a x16s" #X16s

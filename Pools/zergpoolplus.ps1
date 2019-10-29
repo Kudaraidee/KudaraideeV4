@@ -10,7 +10,6 @@ if (-not $Request) {return}
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 $HostSuffix = ".mine.zergpool.com"
 $PriceField = "actual_last24h"
-# $PriceField = "estimate_current"
 $DivisorMultiplier = 1000000
  
 $Location = "US"
@@ -29,7 +28,7 @@ $Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty N
 	$Stat = Set-Stat -Name "$($Name)_$($PoolAlgorithm)_Profit" -Value ([Double]$Request.$_.$PriceField / $Divisor * (1 - ($Request.$_.fees / 100)))
 
 	$PwdCurr = if ($PoolConf.PwdCurrency) {$PoolConf.PwdCurrency}else {$Config.Passwordcurrency}
-    $WorkerName = If ($PoolConf.WorkerName -like "ID=*") {$PoolConf.WorkerName} else {"ID=$($PoolConf.WorkerName)"}
+    $WorkerName = If ($PoolConf.WorkerName -like "ID=*") {$PoolConf.WorkerName} else {"$($PoolConf.WorkerName)"}
 	
     if ($PoolConf.Wallet) {
         [PSCustomObject]@{
@@ -41,8 +40,8 @@ $Request | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty N
             Protocol      = "stratum+tcp"
             Host          = $PoolHost
             Port          = $PoolPort
-            User          = $PoolConf.Wallet
-		    Pass          = "$($WorkerName),c=$($PwdCurr)"
+            User          = "$($PoolConf.Wallet).$($WorkerName)"
+		    Pass          = "c=$($PwdCurr)"
             Location      = $Location
             SSL           = $false
         }

@@ -1,7 +1,9 @@
-if (!(IsLoaded(".\Include.ps1"))) {. .\Include.ps1;RegisterLoaded(".\Include.ps1")}
+if (!(IsLoaded(".\Includes\include.ps1"))) {. .\Includes\include.ps1;RegisterLoaded(".\Includes\include.ps1")}
 
 try {
-    $Request = Invoke-WebRequest "https://api.nicehash.com/api?method=simplemultialgo.info" -TimeoutSec 15 -UseBasicParsing -Headers @{"Cache-Control" = "no-cache"} | ConvertFrom-Json 
+    $Request = Invoke-WebRequest "https://api2.nicehash.com/main/api/v2/public/simplemultialgo/info/" -TimeoutSec 15 -UseBasicParsing -Headers @{"Cache-Control" = "no-cache"} | ConvertFrom-Json 
+    $RequestAlgodetails = Invoke-WebRequest "https://api2.nicehash.com/main/api/v2/mining/algorithms/" -TimeoutSec 15 -UseBasicParsing -Headers @{"Cache-Control" = "no-cache"} | ConvertFrom-Json 
+    $Request.miningAlgorithms | foreach {$Algo = $_.Algorithm ; $_ | Add-Member -force @{algodetails = $RequestAlgodetails.miningAlgorithms | ? {$_.Algorithm -eq $Algo}}}
 }
 catch { return }
 
@@ -10,29 +12,35 @@ if (-not $Request) {return}
 $Name = (Get-Item $script:MyInvocation.MyCommand.Path).BaseName
 
 # Placed here for Perf (Disk reads)
-    $ConfName = if ($Config.PoolsConfig.$Name -ne $Null){$Name}else{"default"}
+	$ConfName = if ($Config.PoolsConfig.$Name -ne $Null){$Name}else{"default"}
     $PoolConf = $Config.PoolsConfig.$ConfName
+
+
+    $Request.miningAlgorithms| ? { [Double]$_.paying -gt 0 } | ForEach-Object {
+        $Algo = $_.Algorithm
+		$NiceHash_Port = $_.algodetails.port
+        $NiceHash_Algorithm = Get-Algorithm $_.Algorithm
+        $NiceHash_Coin = ""
+
+        $DivisorMultiplier = 1000000000
+        $Divisor = $DivisorMultiplier * [Double]$_.Algodetails.marketFactor
+        $Divisor = 100000000
+
+        $Stat = Set-Stat -Name "$($Name)_$($NiceHash_Algorithm)_Profit" -Value ([Double]$_.paying  / $Divisor)
 
 $Locations = "eu", "usa", "hk", "jp", "in", "br"
 $Locations | ForEach-Object {
         $NiceHash_Location = $_
         
         switch ($NiceHash_Location) {
-            "eu" {$Location = "Europe"}
-            "usa" {$Location = "US"}
-            "jp" {$Location = "JP"}
-            default {$Location = "Asia"}
+            "eu"    {$Location = "EU"}
+            "usa"   {$Location = "US"}
+            "jp"    {$Location = "JP"}
+            "hk"    {$Location = "JP"}
+            "in"    {$Location = "JP"}
+            "br"    {$Location = "US"}
         }
-
-    $Request.result.simplemultialgo | ForEach-Object {
-        $NiceHash_Host = "$($_.Name).$NiceHash_Location.nicehash.com"
-        $NiceHash_Port = $_.port
-        $NiceHash_Algorithm = Get-Algorithm $_.name
-        $NiceHash_Coin = ""
-
-        $Divisor = 1000000000
-
-        $Stat = Set-Stat -Name "$($Name)_$($NiceHash_Algorithm)_Profit" -Value ([Double]$_.paying / $Divisor)
+        $NiceHash_Host = "$($Algo).$($NiceHash_Location).nicehash.com"
 
         if ($PoolConf.Wallet) {
             [PSCustomObject]@{
